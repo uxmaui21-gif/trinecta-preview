@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trinecta — Elétrica, hidráulica, ar e desentupimento em São Paulo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --estudio:#D2C6C3;          /* fundo do estúdio: ajuste para casar com o vídeo */
+  --palavra:#BDB8B2;          /* palavra gigante atrás do personagem */
+  --navy:#131D30; --navy-2:#0C1322; --laranja:#FB5821; --laranja-texto:#B83E12;
+  --cinza:#4A5568; --linha:#E2E6EE; --claro:#F5F7FA;
+  --icone-cor:currentColor; --icone-destaque:#FB5821;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Nunito',system-ui,sans-serif;color:var(--navy);background:#fff}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1280px;margin:0 auto;padding:0 28px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:3px;text-transform:uppercase;line-height:1.7}
+.num{color:var(--laranja-texto);font-weight:800;font-size:14px;letter-spacing:1px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-weight:800;font-size:15px;border-radius:6px;padding:14px 22px;border:0;cursor:pointer;font-family:inherit;min-height:48px}
+.btn svg{width:20px;height:20px}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-laranja{background:var(--laranja);color:var(--navy)}
+.btn-linha{background:transparent;color:var(--navy);border-bottom:2px solid var(--navy);border-radius:0;padding:14px 4px}
+.ic{width:24px;height:24px;flex:none}
+
+/* Barra + cabeçalho: fixos por cima do hero; somem no primeiro scroll */
+.topo{position:fixed;left:0;right:0;top:0;z-index:20;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+body.topo-oculto .topo{transform:translateY(-100%)}
+.barra{background:var(--navy);color:#D6DBE6;font-size:13px;font-weight:800}
+.barra .wrap{display:flex;justify-content:space-between;gap:12px;padding-top:8px;padding-bottom:8px}
+.barra b{color:var(--laranja)}
+header{background:var(--estudio);position:relative;z-index:5}
+.cab{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding-top:14px;padding-bottom:14px}
+.cab nav{display:flex;gap:26px;font-weight:800;font-size:15px}
+.cab .logo img{height:52px;width:auto;display:block}
+.cab .dir{display:flex;justify-content:flex-end;align-items:center;gap:18px;font-weight:800;font-size:15px}
+.cab .dir a.tel{display:flex;align-items:center;gap:8px}
+
+/* ===== Hero: o vídeo toca enquanto a pessoa rola ===== */
+.hero{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--estudio);--topo-h:118px}
+.sobe{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+body:not(.topo-oculto) .sobe{transform:translateY(var(--topo-h))}
+/* textos que sobem conforme a rolagem */
+.blocos{position:absolute;right:28px;top:0;bottom:0;width:min(430px,33vw);z-index:4;pointer-events:none}
+.bloco{position:absolute;left:0;right:0;top:47%;will-change:transform,opacity;background:rgba(255,255,255,.94);border-radius:22px;padding:26px 26px 24px;box-shadow:0 24px 60px rgba(19,29,48,.18),0 2px 0 rgba(19,29,48,.04)}
+@supports (backdrop-filter:blur(8px)){.bloco{background:rgba(255,255,255,.86);backdrop-filter:blur(10px)}}
+.bloco > *{will-change:transform}
+.bloco .num{display:block;margin-bottom:10px;color:var(--laranja-texto)}
+.bloco h2{margin:0 0 12px;font-size:clamp(30px,2.9vw,44px);line-height:1.03;font-weight:900;letter-spacing:-.6px;color:var(--navy);text-wrap:balance}
+.bloco h2 em{font-style:normal;color:var(--laranja-texto)}
+.bloco p{margin:0 0 16px;font-size:16.5px;line-height:1.5;color:#3A4558}
+.bloco ul{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:9px}
+.bloco li{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15.5px;color:var(--navy)}
+.bloco li svg{width:30px;height:30px;flex:none;padding:5px;border-radius:9px;background:var(--claro);--icone-cor:var(--navy)}
+.saiba{pointer-events:auto;display:inline-flex;align-items:center;gap:10px;background:var(--laranja);color:var(--navy);font-weight:900;font-size:16px;padding:14px 22px 14px 24px;border-radius:999px;min-height:50px;box-shadow:0 10px 24px rgba(251,88,33,.35);transition:transform .2s,box-shadow .2s,background .2s}
+.saiba svg{width:20px;height:20px;--icone-cor:var(--navy);--icone-destaque:var(--navy);transition:transform .2s}
+.saiba:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(251,88,33,.45);background:#FF6A36}
+.saiba:hover svg{transform:translateX(4px)}
+.saiba:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+/* WhatsApp flutuante: sempre na tela */
+.zap-flutua{position:fixed;right:28px;bottom:112px;z-index:30;display:inline-flex;align-items:center;gap:12px;background:#25D366;color:#0B2A1A;font-weight:900;font-size:17px;padding:10px 26px 10px 10px;border-radius:999px;min-height:64px;box-shadow:0 16px 36px rgba(18,140,74,.38);animation:flutua 3.2s ease-in-out infinite;transition:bottom .35s,background .2s}
+.zap-flutua .bola{width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.zap-flutua svg{width:26px;height:26px;--icone-cor:#128C4A;--icone-destaque:#25D366}
+.zap-flutua::after{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid #25D366;animation:onda 3.2s ease-out infinite;pointer-events:none}
+.zap-flutua:hover{background:#2EE072}
+.zap-flutua:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+body.fora-hero .zap-flutua{bottom:28px}
+@keyframes flutua{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes onda{0%{opacity:.7;transform:scale(1)}70%,100%{opacity:0;transform:scale(1.18,1.4)}}
+/* Serviços */
+.servs{display:flex;flex-direction:column}
+.serv{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;padding:40px 0;border-top:1px solid var(--linha);scroll-margin-top:24px}
+.serv:last-child{border-bottom:1px solid var(--linha)}
+.serv .cab-s{display:flex;gap:18px;align-items:flex-start}
+.serv .ic-s{width:64px;height:64px;border-radius:16px;background:var(--navy);display:flex;align-items:center;justify-content:center;flex:none}
+.serv .ic-s svg{width:36px;height:36px;--icone-cor:#fff;--icone-destaque:var(--laranja)}
+.serv h3{margin:4px 0 10px;font-size:clamp(24px,2.3vw,32px);line-height:1.08;font-weight:900}
+.serv p{margin:0 0 16px;color:#3A4558;line-height:1.6;font-size:16.5px;max-width:520px}
+.serv .tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.serv .tags span{font-size:13px;font-weight:800;background:var(--claro);border-radius:999px;padding:7px 12px}
+.serv ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.serv li{display:flex;gap:12px;align-items:center;font-weight:800;font-size:16px;padding:14px 16px;background:var(--claro);border-radius:12px}
+.serv li svg{width:22px;height:22px;flex:none;--icone-cor:var(--laranja-texto)}
+.publico{display:flex;flex-wrap:wrap;gap:10px;margin:-8px 0 28px}
+.publico span{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--navy);border-radius:999px;padding:9px 16px;font-weight:900;font-size:15px}
+.publico span.forte{background:var(--navy);color:#fff}
+.publico svg{width:20px;height:20px}
+.publico span.forte svg{--icone-cor:#fff}
+/* partículas e ícones que sobem (dão a sensação da página rolando) */
+.flutua{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.flutua.atras{z-index:1}
+.flutua.frente{z-index:4}
+.flutua i{position:absolute;left:0;top:0;display:block;will-change:transform}
+.flutua i svg{display:block;width:100%;height:100%;--icone-cor:var(--navy);--icone-destaque:var(--laranja)}
+.flutua i.ponto{border-radius:3px}
+.pular{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--navy);padding:10px 20px;min-height:46px;box-sizing:border-box;border:2px solid var(--navy);border-radius:999px;background:rgba(255,255,255,.55)}
+.pular:hover{background:#fff}
+.pular svg{width:18px;height:18px;transform:rotate(90deg)}
+.pular:focus-visible{outline:3px solid var(--laranja);outline-offset:2px}
+.palco{position:absolute;inset:0;background:#fff}
+.palavra{position:absolute;left:0;right:0;top:50%;transform:translateY(-58%);text-align:center;font-weight:900;
+  font-size:clamp(80px,17vw,260px);line-height:.85;letter-spacing:-4px;color:var(--palavra);white-space:nowrap;
+  transition:opacity .3s ease, transform .3s ease;user-select:none;z-index:1}
+.palavra.troca{opacity:0;transform:translateY(-52%)}
+.palavra{display:none}          /* palavra gigante desligada: troque para display:block para testar como fundo */
+.selo{position:absolute;left:28px;top:50%;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;gap:14px;max-width:260px}
+.selo-ic{position:relative;width:104px;height:104px;border-radius:24px;background:var(--navy);display:flex;align-items:center;justify-content:center;box-shadow:0 18px 40px rgba(19,29,48,.18)}
+.selo-ic svg{width:56px;height:56px;--icone-cor:#fff;--icone-destaque:#FB5821;overflow:visible}
+.selo-txt .num{display:block;margin-bottom:4px}
+.selo-txt b{display:block;font-size:30px;font-weight:900;line-height:1.05;transition:opacity .3s, filter .3s}
+.selo-txt span.sub{display:block;font-size:15px;color:var(--cinza);margin-top:4px;transition:opacity .3s, filter .3s}
+.selo.trocando .selo-txt b,.selo.trocando .selo-txt span.sub{opacity:0;filter:blur(6px)}
+.particula{position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:2px;pointer-events:none;opacity:0}
+.particula.vai{animation:voar .7s ease-out forwards}
+@keyframes voar{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.3)}}
+/* Só UM vídeo visível por vez, em modo multiplicar: o cinza do estúdio some e a palavra fica "atrás" */
+.palco video{position:absolute;inset:0;width:100%;height:100%;z-index:2;mix-blend-mode:multiply;object-fit:cover;object-position:50% 55%;opacity:0}
+.palco video.on{opacity:1}
+.palco::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(90deg,var(--estudio) 0%,transparent 12%,transparent 88%,var(--estudio) 100%)}
+.h-esq{position:absolute;left:28px;top:28px;z-index:4;max-width:240px;transition:opacity .3s}
+.h-esq .traco{width:40px;height:2px;background:var(--navy);margin-top:12px}
+.h-dir{position:absolute;right:28px;top:28px;z-index:4;text-align:right}
+.h-baixo{position:absolute;left:28px;right:28px;bottom:28px;z-index:4;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.h-baixo .ctas{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+h1.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.nav-hero{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.9);padding:8px 8px 8px 18px;border-radius:999px}
+.nav-hero .cont{font-weight:800;font-size:15px;min-width:160px}
+.nav-hero .cont span{color:var(--laranja-texto)}
+.nav-hero .cont .sr-nome{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.nav-hero .cont{min-width:80px}
+.seta{width:46px;height:46px;border-radius:999px;border:0;background:var(--navy);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.seta:disabled{opacity:.3;cursor:default}
+.seta svg{width:22px;height:22px}
+.dica{position:absolute;left:50%;bottom:110px;transform:translateX(-50%);z-index:4;background:var(--navy);color:#fff;font-weight:800;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .3s;display:flex;gap:8px;align-items:center}
+.dica.hide{opacity:0}
+.barra-prog{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--laranja);z-index:5}
+.carregando{position:absolute;right:28px;bottom:96px;z-index:4;font-size:12px;font-weight:800;color:var(--cinza)}
+
+/* Faixa de serviços */
+.faixa{background:var(--navy);color:#fff;position:relative;z-index:6}
+.faixa .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.faixa button{all:unset;cursor:pointer;display:flex;align-items:center;gap:14px;padding:22px 18px;border-right:1px solid rgba(255,255,255,.12);min-height:44px}
+.faixa button:last-child{border-right:0}
+.faixa button svg{width:40px;height:40px;flex:none;--icone-cor:#fff}
+.faixa .t{font-weight:800;font-size:16px;display:block}
+.faixa .s{font-size:13px;color:#AEB6C6;display:block}
+.faixa button:hover{background:rgba(255,255,255,.05)}
+.faixa button:focus-visible{outline:3px solid var(--laranja);outline-offset:-3px}
+
+/* /01 Destaque */
+.destaque{display:grid;grid-template-columns:1.1fr 1.4fr .7fr;min-height:480px;background:var(--navy-2);color:#fff}
+.destaque .txt{padding:56px 40px;display:flex;flex-direction:column;justify-content:center;gap:18px}
+.destaque h2{margin:0;font-size:clamp(34px,3.6vw,52px);line-height:1.02;font-weight:900;text-transform:uppercase}
+.destaque h2 span{color:var(--laranja)}
+.destaque p{margin:0;color:#D6DBE6;font-size:17px;line-height:1.55;max-width:420px}
+.destaque .foto{background-size:cover;background-position:center;min-height:320px}
+.destaque .stats{display:flex;flex-direction:column;justify-content:center;padding:32px;border-left:1px solid rgba(255,255,255,.12)}
+.stat{padding:18px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+.stat:last-child{border-bottom:0}
+.stat b{display:block;font-size:34px;font-weight:900}
+.stat span{font-size:14px;color:#AEB6C6}
+
+/* Seções */
+.sec{padding:96px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:36px;flex-wrap:wrap}
+.sec-head h2{margin:6px 0 0;font-size:clamp(32px,3.4vw,48px);line-height:1.02;font-weight:900;text-transform:uppercase;max-width:680px}
+.sec-head p{margin:0;color:var(--cinza);max-width:380px;line-height:1.55}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.card{background:var(--claro);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.card .img{aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--estudio)}
+.card .corpo{padding:20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card .topo{display:flex;justify-content:space-between;align-items:center}
+.card .topo svg{width:30px;height:30px}
+.card h3{margin:0;font-size:20px;font-weight:800}
+.card p{margin:0;color:var(--cinza);line-height:1.5;font-size:15px}
+.precos{background:var(--claro)}
+.produtos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.prod{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.prod .img{aspect-ratio:4/3;border-radius:6px;background-size:cover;background-position:center;background-color:var(--estudio)}
+.prod h3{margin:0;font-size:16px;font-weight:800}
+.prod .linha{display:flex;justify-content:space-between;align-items:center}
+.prod .preco{font-weight:900;font-size:18px}
+.prod .mais{width:40px;height:40px;border-radius:6px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center}
+.prod .mais svg{width:22px;height:22px;--icone-cor:#fff}
+.bq{display:grid;grid-template-columns:1fr 1fr;min-height:520px}
+.bq .lado{position:relative;padding:56px 44px;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;color:#fff;background-size:cover;background-position:center;min-height:420px;background-color:var(--navy)}
+.bq .lado::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,19,34,.1) 20%,rgba(12,19,34,.9) 100%)}
+.bq .lado > *{position:relative}
+.bq .lado h3{margin:0;font-size:clamp(28px,2.8vw,40px);font-weight:900;text-transform:uppercase;line-height:1.02}
+.bq .lado p{margin:0;color:#E2E6EE;max-width:420px;line-height:1.5}
+.bq .lado.ev::after{content:"";position:absolute;right:0;top:0;width:38%;height:46%;background:var(--laranja);clip-path:polygon(30% 0,100% 0,100% 100%,0 100%)}
+.bq .lado.ev .tag{position:absolute;right:28px;top:28px;z-index:2;color:var(--navy);font-weight:900;text-transform:uppercase;font-size:20px;line-height:1.1;text-align:right}
+.bairros{display:flex;flex-wrap:wrap;gap:10px}
+.bairros span{border:1px solid var(--linha);border-radius:999px;padding:10px 18px;font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px}
+.bairros svg{width:18px;height:18px}
+.faq{max-width:860px}
+.faq details{border-top:1px solid var(--linha);padding:20px 0}
+.faq details:last-child{border-bottom:1px solid var(--linha)}
+.faq summary{cursor:pointer;font-weight:800;font-size:18px;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:44px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary svg{width:26px;height:26px;flex:none;transition:transform .2s}
+.faq details[open] summary svg{transform:rotate(45deg)}
+.faq p{margin:10px 0 0;color:var(--cinza);line-height:1.6}
+.cta-final{background:var(--laranja);color:var(--navy);padding:72px 0}
+.cta-final .wrap{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.cta-final h2{margin:0;font-size:clamp(32px,3.6vw,52px);font-weight:900;text-transform:uppercase;line-height:1}
+footer{background:var(--navy-2);color:#AEB6C6;padding:44px 0;font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+footer img{height:46px;width:auto}
+
+@media (max-width:1080px){
+  .cab nav{display:none}
+  .cab{grid-template-columns:auto 1fr}
+  .faixa .grid{grid-template-columns:repeat(5,minmax(160px,1fr));overflow-x:auto}
+  .destaque{grid-template-columns:1fr 1fr}
+  .destaque .stats{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;border-left:0;border-top:1px solid rgba(255,255,255,.12)}
+  .stat{flex:1 1 160px;border-bottom:0}
+  .cards,.produtos{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:700px){
+  .selo{top:auto;bottom:150px;left:16px;flex-direction:row;align-items:center;gap:12px}
+  .selo-ic{width:64px;height:64px;border-radius:16px}
+  .selo-ic svg{width:36px;height:36px}
+  .selo-txt b{font-size:22px}
+  .selo-txt span.sub{display:none}
+  .hero{min-height:520px;--topo-h:70px}
+  .blocos{left:16px;right:16px;width:auto;top:16px;bottom:auto;height:46%}
+  .bloco{top:0}
+  .bloco{padding:16px 16px 14px;border-radius:16px}
+  .bloco .num{margin-bottom:6px;font-size:11px}
+  .bloco h2{font-size:23px;margin-bottom:10px}
+  .bloco p,.bloco ul{display:none}
+  .saiba{font-size:15px;padding:11px 18px;min-height:44px}
+  .zap-flutua{right:16px;bottom:154px;padding:8px;min-height:0}
+  .zap-flutua .txt{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .zap-flutua .bola{width:48px;height:48px}
+  body.fora-hero .zap-flutua{bottom:16px}
+  .serv{grid-template-columns:1fr;gap:20px;padding:32px 0}
+  .publico span{font-size:14px;padding:7px 12px}
+  .selo-txt b{white-space:nowrap}
+  .pular{font-size:13px}
+  .barra{display:none}
+  .barra .so-desk{display:none}
+  .cab .dir a.tel span{display:none}
+  .cab .logo img{height:40px}
+  .palavra{font-size:clamp(64px,24vw,130px);letter-spacing:-2px;top:46%}
+  .palco::after{background:none}
+  .h-dir{display:none}
+  .h-esq{display:none}
+  .h-baixo{left:16px;right:16px;bottom:16px;flex-direction:column;align-items:stretch;gap:10px}
+  .h-baixo .ctas{flex-wrap:nowrap}
+  .h-baixo .ctas .btn{flex:1}
+  .nav-hero{justify-content:space-between}
+  .dica{bottom:290px}
+  .carregando{bottom:auto;top:20px;right:16px}
+  .faixa .grid{grid-template-columns:repeat(5,minmax(130px,1fr))}
+  .faixa button{flex-direction:column;align-items:flex-start;gap:6px;padding:16px 14px}
+  .faixa .s{display:none}
+  .destaque{grid-template-columns:1fr}
+  .destaque .txt{padding:40px 22px}
+  .sec{padding:64px 0}
+  .cards,.produtos{grid-template-columns:1fr}
+  .bq{grid-template-columns:1fr}
+  .wrap{padding:0 20px}
+}
+@media (prefers-reduced-motion:reduce){ .palavra{transition:none} .zap-flutua,.zap-flutua::after{animation:none} }
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<symbol id="ic-eletrica" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><circle cx="12" cy="12" r="9"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M13 6l-4 6h4l-2 6 5-7h-4l1-5z"/></g></symbol>
+<symbol id="ic-hidraulica" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M4 8v4"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M4 10h9a3 3 0 0 1 3 3v1"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M9 10V7"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M7 7h4"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M16 16.5c-.8 1.1-1.5 2-1.5 3a1.5 1.5 0 0 0 3 0c0-1-.7-1.9-1.5-3z"/></g></symbol>
+<symbol id="ic-desentupimento" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M12 3v9"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M6.5 17a5.5 5 0 0 1 11 0z"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M4 21h16"/></g></symbol>
+<symbol id="ic-ar-condicionado" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="3" y="4" width="18" height="8" rx="2"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M6 9h12"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M7 15c0 1.5-1 2-1 3.5"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 15v4"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M17 15c0 1.5 1 2 1 3.5"/></g></symbol>
+<symbol id="ic-projetos" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="3" y="3" width="18" height="18" rx="2"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M3 12h6v9"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M15 3v6h6"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 12h0"/></g></symbol>
+<symbol id="ic-banheiro-quimico" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M6 22V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v17"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M4 22h16"/></g><g stroke="var(--icone-cor,currentColor)"><rect x="9" y="8" width="6" height="14" rx="0"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M10 5.5h4"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M13.5 15h0"/></g></symbol>
+<symbol id="ic-iluminacao" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M9 18h6"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M10 21h4"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.3 1 2.1h5c0-.8.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 7v4"/></g></symbol>
+<symbol id="ic-quadro-eletrico" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="5" y="3" width="14" height="18" rx="2"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M9 7v3"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M12 7v3"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M15 7v3"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12.5 13l-2 3h3l-2 3"/></g></symbol>
+<symbol id="ic-tomada" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="4" y="4" width="16" height="16" rx="4"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M10 10v2"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M14 10v2"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 15.5v.5"/></g></symbol>
+<symbol id="ic-chuveiro" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M4 21V8a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M10 8h8"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M11 12v1"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M14 12v1"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M17 12v1"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12.5 16v1"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M15.5 16v1"/></g></symbol>
+<symbol id="ic-vazamento" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M3 6h8a3 3 0 0 1 3 3v3"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M3 3v6"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M11 12h6"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M14 15.5c-.8 1.1-1.5 2-1.5 3a1.5 1.5 0 0 0 3 0c0-1-.7-1.9-1.5-3z"/></g></symbol>
+<symbol id="ic-caixa-dagua" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M4 8h16"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M7 8V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M5 8l1 13h12l1-13"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M7 14c1.7-1 3.3 1 5 0s3.3-1 5 0"/></g></symbol>
+<symbol id="ic-vaso-sanitario" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="6" y="3" width="12" height="5" rx="1"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M5 11h14c0 3.5-3 6-7 6s-7-2.5-7-6z"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M9 17l-1 4h8l-1-4"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 5.5h0"/></g></symbol>
+<symbol id="ic-pia" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M3 12h18"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M5 12v3a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4v-3"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M12 12V6a2 2 0 0 1 4 0v1"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M16 9.5c-.5.7-1 1.3-1 2a1 1 0 0 0 2 0c0-.7-.5-1.3-1-2z"/></g></symbol>
+<symbol id="ic-ralo-esgoto" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><circle cx="12" cy="12" r="8"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 9h8"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M7 12h10"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 15h8"/></g></symbol>
+<symbol id="ic-caixa-de-gordura" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="3" y="8" width="18" height="12" rx="2"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M3 12h18"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 16h0"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 16h0"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M16 16h0"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M9 5h6"/></g></symbol>
+<symbol id="ic-manutencao-preventiva" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="3" y="5" width="18" height="16" rx="2"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M3 10h18"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M8 3v4"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M16 3v4"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M9 15l2 2 4-4"/></g></symbol>
+<symbol id="ic-reforma-acabamento" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="4" y="3" width="13" height="5" rx="1"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M17 5h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-7v3"/></g><g stroke="var(--icone-destaque,#FB5821)"><rect x="11" y="13" width="2" height="8" rx="1"/></g></symbol>
+<symbol id="ic-valor-aprovado" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M14 3v5h5"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M9 14l2 2 4-4"/></g></symbol>
+<symbol id="ic-area-limpa" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M11 3l1.5 4.5L17 9l-4.5 1.5L11 15l-1.5-4.5L5 9l4.5-1.5z"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M18 14l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M5 17v3"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M3.5 18.5h3"/></g></symbol>
+<symbol id="ic-testado" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><circle cx="12" cy="12" r="9"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 12l3 3 5-6"/></g></symbol>
+<symbol id="ic-garantia" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M9 12l2 2 4-4"/></g></symbol>
+<symbol id="ic-no-prazo" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><circle cx="12" cy="12" r="9"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 7v5l3 2"/></g></symbol>
+<symbol id="ic-equipe-uniformizada" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 8a4 4 0 0 1 8 0"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M7 8h10"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M9 9.5a3 3 0 0 0 6 0"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M5 21v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1"/></g></symbol>
+<symbol id="ic-sem-quebra-quebra" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="3" y="5" width="18" height="14" rx="1"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M3 12h18"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M12 5v7"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M9 15.5l2 2 4-4"/></g></symbol>
+<symbol id="ic-protecao-do-piso" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M3 21h18"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M4 18h11"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M4 18l2-3h9"/></g><g stroke="var(--icone-cor,currentColor)"><circle cx="17" cy="16.5" r="2.5"/></g></symbol>
+<symbol id="ic-organizacao" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="3" y="8" width="18" height="12" rx="2"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M9 8V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M3 13h18"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M11 13v2h2v-2"/></g></symbol>
+<symbol id="ic-diagnostico" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><circle cx="11" cy="11" r="7"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M21 21l-5-5"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M7 11h2l1-2 2 4 1-2h2"/></g></symbol>
+<symbol id="ic-atendimento-rapido" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M21 12a9 9 0 1 1-3-6.7"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M21 4v5h-5"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M12 7v5l3 2"/></g></symbol>
+<symbol id="ic-entrega-retirada" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M3 7h11v9H3z"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M14 10h4l3 3v3h-7"/></g><g stroke="var(--icone-cor,currentColor)"><circle cx="7" cy="18" r="2"/></g><g stroke="var(--icone-cor,currentColor)"><circle cx="17" cy="18" r="2"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M6 10h5"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M6 13h3"/></g></symbol>
+<symbol id="ic-chat-whatsapp" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M9 12h0"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 12h0"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M15 12h0"/></g></symbol>
+<symbol id="ic-telefone" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M15 3a6 6 0 0 1 6 6"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M15 7a2 2 0 0 1 2 2"/></g></symbol>
+<symbol id="ic-localizacao" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z"/></g><g stroke="var(--icone-destaque,#FB5821)"><circle cx="12" cy="10" r="2.5"/></g></symbol>
+<symbol id="ic-agendar" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="3" y="5" width="18" height="16" rx="2"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M3 10h18"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M8 3v4"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M16 3v4"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 14h0"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 14h0"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M16 14h0"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 17h0"/></g></symbol>
+<symbol id="ic-empresa-cnpj" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M16 9h3a1 1 0 0 1 1 1v11"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M2 21h20"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 7h4"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 11h4"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 15h4"/></g></symbol>
+<symbol id="ic-avaliacao" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/></g></symbol>
+<symbol id="ic-pagamento" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><rect x="2" y="5" width="20" height="14" rx="2"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M2 10h20"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M6 15h4"/></g></symbol>
+<symbol id="ic-para-obras" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M3 17h18"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M5 17v-2a7 7 0 0 1 14 0v2"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M10 8V6h4v2"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 8v4"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M5 21h14"/></g></symbol>
+<symbol id="ic-para-eventos" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M3 20L12 4l9 16z"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M9 20l3-6 3 6"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 4V2h3l-1 1 1 1h-3"/></g></symbol>
+<symbol id="ic-publico" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><circle cx="9" cy="8" r="3"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M3 20a6 6 0 0 1 12 0"/></g><g stroke="var(--icone-destaque,#FB5821)"><circle cx="17" cy="9" r="2.5"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M15 14.5a5 5 0 0 1 6.5 4.5"/></g></symbol>
+<symbol id="ic-higienizacao" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M8 9h6v11a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M9 9V6h4l3 2"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M10 6V4h3"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M18 5h0"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M20 7h0"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M18 9h0"/></g></symbol>
+<symbol id="ic-acessivel-pne" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><circle cx="12" cy="4" r="1.5"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M12 7v6h5l2 5"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M15.5 18.5a5 5 0 1 1-6.5-7"/></g></symbol>
+<symbol id="ic-seta-direita" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M5 12h14"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M13 6l6 6-6 6"/></g></symbol>
+<symbol id="ic-seta-esquerda" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M19 12H5"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M11 6l-6 6 6 6"/></g></symbol>
+<symbol id="ic-abrir" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><circle cx="12" cy="12" r="9"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M12 8v8"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 12h8"/></g></symbol>
+<symbol id="ic-fechar-faq" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><circle cx="12" cy="12" r="9"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M8 12h8"/></g></symbol>
+<symbol id="ic-menu" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M4 7h16"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M4 12h16"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M4 17h10"/></g></symbol>
+<symbol id="ic-fechar" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><path d="M6 6l12 12"/></g><g stroke="var(--icone-cor,currentColor)"><path d="M18 6L6 18"/></g></symbol>
+<symbol id="ic-play" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><circle cx="12" cy="12" r="9"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M10 8l6 4-6 4z"/></g></symbol>
+<symbol id="ic-pausa" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-cor,currentColor)"><circle cx="12" cy="12" r="9"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M10 9v6"/></g><g stroke="var(--icone-destaque,#FB5821)"><path d="M14 9v6"/></g></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-destaque,#FB5821)"><path d="M5 12l5 5L20 7"/></g></symbol>
+</svg>
+
+<div class="topo" id="topo">
+<div class="barra"><div class="wrap">
+  <span>Elétrica · Hidráulica · Ar-condicionado · Desentupimento · Projetos</span>
+  <span class="so-desk">Obras, prédios, condomínios e residências · <b>Do projeto à manutenção</b></span>
+</div></div>
+
+<header><div class="wrap cab">
+  <nav><a href="#como">Como trabalhamos</a><a href="#desentupimento">Desentupimento</a><a href="#banheiro">Banheiro químico</a></nav>
+  <a class="logo" href="#" aria-label="Trinecta, início"><img src="data:image/png;base64,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" alt="Trinecta"></a>
+  <div class="dir">
+    <a class="tel" href="tel:+5511000000000"><svg class="ic" aria-hidden="true"><use href="#ic-telefone"/></svg><span>(11) [telefone]</span></a>
+    <a class="btn btn-laranja zap" href="#">Orçamento</a>
+  </div>
+</div></header>
+</div>
+
+<section class="hero" id="hero" aria-labelledby="h1">
+  <h1 class="sr" id="h1">Trinecta: projeto, instalação e manutenção de elétrica, hidráulica, ar-condicionado e desentupimento para obras, prédios e residências</h1>
+  <div class="palco" id="palco">
+    <div class="flutua atras" id="flutuaAtras" aria-hidden="true"></div>
+    <div class="palavra" id="palavra" aria-hidden="true">ELÉTRICA</div>
+    <video id="ida" class="on" muted playsinline preload="auto" aria-hidden="true"></video>
+    <video id="volta" muted playsinline preload="auto" aria-hidden="true"></video>
+  </div>
+  <div class="flutua frente" id="flutuaFrente" aria-hidden="true"></div>
+  <div class="h-esq sobe" id="hEsq"><div class="kicker">Todo mundo faz.<br>Sem bagunça,<br>quase ninguém.</div><div class="traco"></div></div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="dissolver" x="-60%" y="-60%" width="220%" height="220%"><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="3" result="ruido"/><feDisplacementMap id="desloca" in="SourceGraphic" in2="ruido" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
+  <div class="selo" id="selo" aria-live="polite">
+    <div class="selo-ic" id="seloIc"><svg id="seloSvg" filter="url(#dissolver)" aria-hidden="true"><use id="seloUse" href="#ic-eletrica"/></svg></div>
+    <div class="selo-txt"><span class="num" id="seloNum">/01</span><b id="seloNome">Elétrica</b><span class="sub" id="seloSub">Quadros e iluminação</span></div>
+  </div>
+  <div class="blocos sobe" id="blocos"></div>
+  <div class="dica" id="dica"><svg class="ic" aria-hidden="true" style="transform:rotate(90deg)"><use href="#ic-seta-direita"/></svg>Role para ver os serviços</div>
+  <div class="carregando sobe" id="carregando"></div>
+  <div class="h-baixo">
+    <div class="ctas">
+      <button class="pular" id="pular" type="button">Pular animação <span aria-hidden="true" style="font-size:18px">↓</span></button>
+    </div>
+    <div class="nav-hero">
+      <div class="cont"><span id="n">01</span> / 05 <b id="nome" class="sr-nome">Elétrica</b></div>
+      <button class="seta" id="ant" aria-label="Serviço anterior"><svg aria-hidden="true"><use href="#ic-seta-esquerda"/></svg></button>
+      <button class="seta" id="prox" aria-label="Próximo serviço"><svg aria-hidden="true"><use href="#ic-seta-direita"/></svg></button>
+    </div>
+  </div>
+  <div class="barra-prog" id="prog"></div>
+</section>
+<a class="zap-flutua zap" href="#" aria-label="Pedir orçamento no WhatsApp"><span class="bola"><svg aria-hidden="true"><use href="#ic-chat-whatsapp"/></svg></span><span class="txt">Orçamento no WhatsApp</span></a>
+
+<nav class="faixa" aria-label="Serviços"><div class="grid" id="faixa"></div></nav>
+
+<section class="destaque" aria-labelledby="d1">
+  <div class="txt">
+    <div class="num">/01 — O DIFERENCIAL</div>
+    <h2 id="d1">Precisão em cada detalhe. <span>Bagunça em nenhum.</span></h2>
+    <p>Do projeto à manutenção, para construtoras, condomínios, comércios e residências. Obra organizada, área limpa e valor aprovado por escrito antes de começar.</p>
+    <a class="btn btn-laranja zap" href="#" style="align-self:flex-start">Falar no WhatsApp</a>
+  </div>
+  <div class="foto" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203533_f797bc40-9aff-444b-bb4c-e6307265ad44.png')" role="img" aria-label="Técnico estendendo proteção no piso"></div>
+  <div class="stats">
+    <div class="stat"><b>[X]+</b><span>obras e serviços entregues</span></div>
+    <div class="stat"><b>[X] dias</b><span>de garantia por escrito</span></div>
+    <div class="stat"><b>[X,X] ★</b><span>no Google</span></div>
+    <div class="stat"><b>[X] min</b><span>para chegar no Centro</span></div>
+  </div>
+</section>
+
+<section class="sec" id="servicos" aria-labelledby="s1"><div class="wrap">
+  <div class="sec-head">
+    <div><div class="num">/02 — SERVIÇOS</div><h2 id="s1">Do projeto à manutenção.</h2></div>
+    <p>Fazemos a instalação completa, do começo ao fim, e cuidamos dela depois.</p>
+  </div>
+  <div class="publico">
+    <span class="forte"><svg aria-hidden="true"><use href="#ic-empresa-cnpj"/></svg>Construtoras</span>
+    <span class="forte"><svg aria-hidden="true"><use href="#ic-empresa-cnpj"/></svg>Condomínios e prédios</span>
+    <span><svg aria-hidden="true"><use href="#ic-empresa-cnpj"/></svg>Comércio e empresas</span>
+    <span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Residências</span>
+  </div>
+  <div class="servs">
+    <article class="serv" id="servico-eletrica">
+      <div>
+        <div class="cab-s"><div class="ic-s"><svg aria-hidden="true"><use href="#ic-eletrica"/></svg></div>
+        <div><span class="num">ELÉTRICA</span><h3>Projeto e instalação elétrica completa.</h3></div></div>
+        <p>Dimensionamos, instalamos e entregamos tudo testado, em obra nova, reforma ou prédio já em uso. Manutenção também.</p>
+        <div class="tags"><span>Obra nova</span><span>Reforma</span><span>Manutenção</span></div>
+        <a class="btn btn-navy zap" data-servico="Elétrica" href="#"><svg aria-hidden="true"><use href="#ic-chat-whatsapp"/></svg>Orçamento de elétrica</a>
+      </div>
+      <ul><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Projeto elétrico e dimensionamento de cargas</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Entrada de energia, quadros e prumadas</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Iluminação de áreas comuns, garagens e fachadas</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Adequação e manutenção preventiva</li></ul>
+    </article>
+    <article class="serv" id="servico-hidraulica">
+      <div>
+        <div class="cab-s"><div class="ic-s"><svg aria-hidden="true"><use href="#ic-hidraulica"/></svg></div>
+        <div><span class="num">HIDRÁULICA</span><h3>Todo o sistema hidráulico, do projeto à obra.</h3></div></div>
+        <p>Projetamos e executamos a tubulação inteira da construção ou da reforma, de uma casa a um prédio inteiro.</p>
+        <div class="tags"><span>Obra nova</span><span>Reforma</span><span>Manutenção</span></div>
+        <a class="btn btn-navy zap" data-servico="Hidráulica" href="#"><svg aria-hidden="true"><use href="#ic-chat-whatsapp"/></svg>Orçamento de hidráulica</a>
+      </div>
+      <ul><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Água fria e água quente</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Esgoto e águas pluviais</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Reservatórios, bombas e recalque</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Caça-vazamento e manutenção</li></ul>
+    </article>
+    <article class="serv" id="servico-ar">
+      <div>
+        <div class="cab-s"><div class="ic-s"><svg aria-hidden="true"><use href="#ic-ar-condicionado"/></svg></div>
+        <div><span class="num">AR-CONDICIONADO</span><h3>Climatização com infraestrutura completa.</h3></div></div>
+        <p>Da infraestrutura na obra (tubulação, dreno e ponto elétrico) à instalação e aos contratos de manutenção.</p>
+        <div class="tags"><span>Obra nova</span><span>Reforma</span><span>Manutenção</span></div>
+        <a class="btn btn-navy zap" data-servico="Ar-condicionado" href="#"><svg aria-hidden="true"><use href="#ic-chat-whatsapp"/></svg>Orçamento de ar-condicionado</a>
+      </div>
+      <ul><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Infraestrutura para obra nova ou reforma</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Instalação de split e multi-split</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Limpeza e manutenção preventiva</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Contratos para empresas e condomínios</li></ul>
+    </article>
+    <article class="serv" id="servico-desentupimento">
+      <div>
+        <div class="cab-s"><div class="ic-s"><svg aria-hidden="true"><use href="#ic-desentupimento"/></svg></div>
+        <div><span class="num">DESENTUPIMENTO</span><h3>Desentupimento predial e residencial.</h3></div></div>
+        <p>Condomínios, prédios, comércios e residências, com diagnóstico antes e valor aprovado por escrito.</p>
+        <div class="tags"><span>Obra nova</span><span>Reforma</span><span>Manutenção</span></div>
+        <a class="btn btn-navy zap" data-servico="Desentupimento" href="#"><svg aria-hidden="true"><use href="#ic-chat-whatsapp"/></svg>Orçamento de desentupimento</a>
+      </div>
+      <ul><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Colunas e prumadas de esgoto</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Redes, caixas de inspeção e de gordura</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Limpeza preventiva da rede</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Pia, vaso e ralo</li></ul>
+    </article>
+    <article class="serv" id="servico-projetos">
+      <div>
+        <div class="cab-s"><div class="ic-s"><svg aria-hidden="true"><use href="#ic-projetos"/></svg></div>
+        <div><span class="num">PROJETOS</span><h3>Projeto completo para a sua obra.</h3></div></div>
+        <p>Elétrica e hidráulica planejadas juntas, com escopo, cronograma e valor aprovados por escrito.</p>
+        <div class="tags"><span>Obra nova</span><span>Reforma</span><span>Manutenção</span></div>
+        <a class="btn btn-navy zap" data-servico="Projetos" href="#"><svg aria-hidden="true"><use href="#ic-chat-whatsapp"/></svg>Orçamento de projetos</a>
+      </div>
+      <ul><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Projeto elétrico e hidráulico</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Compatibilização com a obra</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Cronograma e acompanhamento</li><li><svg aria-hidden="true"><use href="#ic-check"/></svg>Obra nova, reforma ou retrofit predial</li></ul>
+    </article>
+  </div>
+</div></section>
+
+<section class="sec" id="como" aria-labelledby="c1"><div class="wrap">
+  <div class="sec-head">
+    <div><div class="num">/03 — COMO TRABALHAMOS</div><h2 id="c1">Quatro passos. Nenhuma surpresa.</h2></div>
+    <p>O mesmo processo da obra nova à manutenção, em prédios e residências.</p>
+  </div>
+  <div class="cards">
+    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203535_896ead70-46f9-4a3a-a273-4332f68451ba.png')"></div><div class="corpo"><div class="topo"><span class="num">01</span><svg aria-hidden="true"><use href="#ic-diagnostico"/></svg></div><h3>Visita técnica</h3><p>Avaliamos o local ou o projeto da obra e explicamos o que precisa ser feito.</p></div></article>
+    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203538_0b2b0127-ecbc-47ec-b685-cb9b45159c90.png')"></div><div class="corpo"><div class="topo"><span class="num">02</span><svg aria-hidden="true"><use href="#ic-valor-aprovado"/></svg></div><h3>Proposta por escrito</h3><p>Escopo, prazo e valor aprovados antes de começar. O preço não muda no meio.</p></div></article>
+    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203535_90a2623e-5315-4664-a740-df795f00830d.png')"></div><div class="corpo"><div class="topo"><span class="num">03</span><svg aria-hidden="true"><use href="#ic-organizacao"/></svg></div><h3>Execução organizada</h3><p>Equipe uniformizada, obra limpa e nada de quebra-quebra desnecessário.</p></div></article>
+    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203535_c0660c56-be9c-469f-9757-83ed2b976da5.png')"></div><div class="corpo"><div class="topo"><span class="num">04</span><svg aria-hidden="true"><use href="#ic-testado"/></svg></div><h3>Teste e entrega</h3><p>Testamos tudo com você e entregamos com garantia por escrito.</p></div></article>
+  </div>
+</div></section>
+
+<section class="sec precos" id="desentupimento" aria-labelledby="p1"><div class="wrap">
+  <div class="sec-head">
+    <div><div class="num">/04 — DESENTUPIMENTO</div><h2 id="p1">Desentupimento predial e residencial.</h2></div>
+    <p>Condomínios, prédios e comércios com atendimento prioritário. Diagnóstico antes e valor aprovado por escrito.</p>
+  </div>
+  <div class="produtos">
+    <div class="prod"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203535_fc92c1e9-9b46-4b05-9ffc-d5e549d81924.png')"></div><h3>Colunas e prumadas</h3><div class="linha"><span class="preco">sob consulta</span><a class="mais zap" href="#" aria-label="Orçamento: colunas e prumadas"><svg aria-hidden="true"><use href="#ic-abrir"/></svg></a></div></div>
+    <div class="prod"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203538_a717d2de-a491-4d2c-8590-0cf9a1519408.png')"></div><h3>Rede de esgoto</h3><div class="linha"><span class="preco">sob consulta</span><a class="mais zap" href="#" aria-label="Orçamento: rede de esgoto"><svg aria-hidden="true"><use href="#ic-abrir"/></svg></a></div></div>
+    <div class="prod"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203535_c0660c56-be9c-469f-9757-83ed2b976da5.png')"></div><h3>Caixa de gordura</h3><div class="linha"><span class="preco">a partir de R$ [X]</span><a class="mais zap" href="#" aria-label="Orçamento: caixa de gordura"><svg aria-hidden="true"><use href="#ic-abrir"/></svg></a></div></div>
+    <div class="prod"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203533_f797bc40-9aff-444b-bb4c-e6307265ad44.png')"></div><h3>Pia, vaso e ralo</h3><div class="linha"><span class="preco">a partir de R$ [X]</span><a class="mais zap" href="#" aria-label="Orçamento: pia, vaso e ralo"><svg aria-hidden="true"><use href="#ic-abrir"/></svg></a></div></div>
+  </div>
+</div></section>
+
+<section class="bq" id="banheiro" aria-label="Banheiro químico">
+  <a class="lado" href="#" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_172824_e2a24b9a-e1a0-484e-aa13-3a27ef920722.png')">
+    <div class="num" style="color:var(--laranja)">/05 — BANHEIRO QUÍMICO</div>
+    <h3>Para obras</h3>
+    <p>Contrato mensal, limpeza periódica inclusa e dentro das normas de segurança do trabalho.</p>
+    <span class="btn btn-laranja" style="align-self:flex-start">Orçamento para obra</span>
+  </a>
+  <a class="lado ev" href="#" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_172827_9ae3076a-38e0-4bc4-be2d-48b47505e95a.png')">
+    <span class="tag">Na data<br>certa</span>
+    <h3>Para eventos</h3>
+    <p>Diga quantas pessoas vão. A gente calcula as cabines, entrega e retira.</p>
+    <span class="btn btn-laranja" style="align-self:flex-start">Orçamento para evento</span>
+  </a>
+</section>
+
+<section class="sec" id="areas" aria-labelledby="a1"><div class="wrap">
+  <div class="sec-head"><div><div class="num">/06 — ONDE ATENDEMOS</div><h2 id="a1">Centro de São Paulo e bairros vizinhos.</h2></div>
+  <p>[confirmar a lista com o cliente]</p></div>
+  <div class="bairros">
+    <span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Sé</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>República</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Bela Vista</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Consolação</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Liberdade</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Santa Cecília</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Bom Retiro</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Cambuci</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Aclimação</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Higienópolis</span>
+  </div>
+</div></section>
+
+<section class="sec precos" id="faq" aria-labelledby="f1"><div class="wrap">
+  <div class="sec-head"><div><div class="num">/07 — DÚVIDAS</div><h2 id="f1">Perguntas frequentes</h2></div></div>
+  <div class="faq">
+    <details><summary>Vocês atendem condomínios e construtoras?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>Sim. Fazemos projeto, execução e contratos de manutenção para prédios, condomínios, comércios e obras. Também atendemos residências.</p></details>
+    <details><summary>Vocês fazem a instalação completa da obra?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>Sim. Elétrica e hidráulica do projeto à entrega, em obra nova ou reforma, e a manutenção depois.</p></details>
+    <details><summary>O preço pode mudar depois que o serviço começa?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>Não. Você aprova o valor por escrito antes. Se aparecer algo novo, a gente para e pergunta.</p></details>
+    <details><summary>Vocês quebram parede ou piso?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>Só quando não tem outro jeito, e sempre avisando antes. O acabamento entra no orçamento.</p></details>
+    <details><summary>Qual é a garantia?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>[X] dias por escrito em todos os serviços.</p></details>
+    <details><summary>Quais as formas de pagamento?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>[PIX, cartão, parcelamento: confirmar]</p></details>
+  </div>
+</div></section>
+
+<section class="cta-final"><div class="wrap">
+  <h2>Manda o projeto ou uma foto do problema.</h2>
+  <a class="btn btn-navy zap" href="#"><svg aria-hidden="true"><use href="#ic-chat-whatsapp"/></svg>Chamar no WhatsApp</a>
+</div></section>
+
+<footer><div class="wrap">
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH4AAABcCAYAAACoRwG1AAAbUklEQVR42u19eZxcVZ3v93fOuVXdIWzKIhqSkLDEBoISQBC0w4gL4zIyToVVGLbgjA8FwVEBJzSPN6CjwXUGo4yEZZDUk2HGBd/TERp1VEhkcGkRIRAGEBlQlixddc/5feePOrf7dKWql4Qk3Z0+n9zcqrrnnuW3b/c2sJ01EkJA1v/l3L3Dafv1AACXwGxvcNjuNoxFFSMAsyAfMNOyv+Xp+8+XHigrsFOIn6zcXoGVajXwrHkHGWvPpxKB+HzjamWK4ydvayA35OGzxppyqIXcdrg31k6fd7JUq4GVynbD9bJ9cTuCP22/k2yHu8XXNQAixokw8L/senMguvrWowcUgFMcPxmQDgi6QJ51wI4w5pMaSEBEBCYEqu1wM32Hfkx6oKhUzJSonyTtru5uKz1QX+fHbdnurcogAgMIRMSEmqrJzIUbzu7aF9Wqbg9W/qTfIJfAHNvb63lmV5dx8kHNQwDEAhL/iZCkyWxnFvD3AhB9FZlC/ERvEYkh9581zpSUDWQ3rJsGfsUYG+oh2JJ9d376gW/ZHgw9sz24b/69B1Rshz3O5xoEYlOkQyTaAQJQKFaWcvGCbMA2mEL8BDXo/rprOoWf0kCCIkNwKTLg3AjEeh/UdrgDQ97/fqlWA7q7Jy3Xy+Tl9oqVajXkp+53tZuWfSSvhWBEbAPZshHioxRQEQGB5633XZjd9zQASA90iuMniEGHalV5xv7zTGYuCPWgImJSOqcISWgD6QPEYAJJW7a7emuvlB7oZDX0Jqeo74MIwBD4GeNMmQQbBnwh5ATOiDhrhu5fBEbEhnoIxtoz6+e+5vDJauiZyRqhy0/b9z22w77V1zWIRPetoftVnNAHPuhVfyPONjg/EfskYKwYCfqZyWrgmUlp0J02fwcx8ikN4KDPNvAfTWYFxCWkOddYEQiYmjwiYn2uwXVmrw9nH3KqVKvhzu5uN4X48doqFSM9UI/1l9iymx2CRt0+kItX54wJG/xDDmu/Vbr+Fz8ItfAdV3aWRGhogULfi6hXQuRqnn/ETgsX9upk4n4z2Qy6/lMPOECsuSjUggoKpEthuRPWSBBcLcvX9JMQb/RDwbMuRqRRo1GoezHBU23Zvcqvr18y2eL4ZrIZdE7CNdaZMgEW8TkIQLLB7bXw0JO69mYSgsu7bcd1v/o1NXzOlp0BqQmRQIyYUA8q1lzAc+bv34jjLzFTiB9XPjtCftrcd9uSPd7XQyNCNzRiQTgjAD6xz/I1/VjYbdHTG7gExtnSlaHmnzTOGgJa2AMCEQK0mSnnNEsbcfw+mUL8uDHoquTivaaJyFLVRso1NdYaut2aUPMPW669iYSgtzcUCRlZtup5QD5mnImGniT0ItbXQ8jK7u352a/508ni3k18ji9SruumfcyW7D4aipTrkOAkYUVAuVoitxfFFgUi7Vf+80Zf8z92mbUEAiQGdkQaSoMgRD794Pn7ltFV5UQ39MyEN+h6ewNPnrOfGLk41IMCQ4smiYZu9/1hdcrt2Dh2TdJeoAoVGYpTMWK81+A63Lw566afLz1QrJjYhp6ZFBE6wTU2Mx0DEbpmbeCMCLARtw8gNnJ96bpV96jX623ZWSXCgKHX6GW1rgonl/Gs174SlYldsGEmfITu1NnvsmX7dl8PQSThdkl0e79fbbH7jYWEaDlgV5VcAlMr2UtDPfzRWiNDDD2BBJK25Hb2Rv9OZGIXbJiJHKF74h17TRPIUijZSKgPXI9hWHpYERj5hCzv7cdd3aZdIaX0QHFgRab/w71PKXGFKTsjKJI4DeQPxPGdO71+1muPmsiG3sTk+G5Y6YHusWPpb2zZzvVeg4iQFE+IOjHinDGuMyv5Wvgvu3anG5cMx+1FW9Tw0zPwi2GD/6XNnNUigzcY/YMxIiK8hiwsx4ln6JmJadAhbDhtxr7izMWhrnURcTYz1nUY55wYTz7vvd6PwG9DcL5Uf7Lh8r6KjFQ2XfjpsmxVTjEfgkgjoJfE+gv3znW414VzDzlDqtUwESN6MmHr40+efZvtdCdAgeCZi8F/kOa7VvVH65D9Zof6A09LFQEA2N3tsLBXU6MQT0OAbmCPXqIKTYmiKOLw5x3xdVt2f+5reRDAgox+AtVYCIM+ZXN2Yfb9L+Dy6PRNkOYmpEF38j7vtNPtCbohPA4x13vKLR03PNTXlrp7ez16W13pHTI2ukDpgQ746UY/rD68TUQ6SA54DI16fA1Z2e2lml9me3Ax+yoWqIYpjt8SBh2AtSfM2b2jw99tnPn6WtSX7nzjk88OJY4ZnXWb7WfJVyuwvwhnqMruIpyG+KSsAOvFyBMieFBVfvZstv5ne930+3UpcXFFxcqiasjPO+wK11H6uN9Q9wK4aDqCJI1QIQgmyGtw3X0PYAlkopRpyUTS7dID5ifPOt4Bf5Rb1vy4uLZyAbJD9pv1JmPsewJ5LIg5WWYaKRpGi6zdzgPhg66B4PYguLbjljUPDHl0eu38zrCu/EsxMktzpQgNGJEPDS6zNu/Pv1P66i+OL1TEFOK3gugP2Zz3gvigtfIamAKRhAKhgXEpaqc3flIeACm2bBsRAO+5AarX3P/wY5cftgo5Fy/IZNmq3C8+omLLZsUQXR/1PajBZsb6XN+VXffzb0wU5MuE89+jOK2fOPP11thPm8wciUDkngqhgmJiOrZwtYYM0MqwV0BBqgFcVrYI9dBra/l75PYnny2QX1982PezkjnW1/xGhp5zIsH739rw4iGYvaY+ER68NBMI6aYItPiT53zUOHe3sebIej2E3FNFYATiYoJGUsoe8qUFrRvAiIhTCGv9PreZ6fbl7A5Wdp+OvaaTgFDMherVSxETTOozvQ9qy27/YHa8YKIUbJgJo98BRaUry0+ac5Mtmas00OReg4HY4gHIEWmHUAJKirLxmUw4UwQiIll/LeSuZA7vR+eXpKfXY/ECV/7SPffD67W27EwjqDM0jaP1oDC4hOccPAMrxn8c30wQo04fq8zozN2Gb7iyOTXvD3l80tUOpk+BNJVKQAl4ggEAMhHJnJiSE1PKxJScMSUjYgUSke8JelJURFy9pr6jZE/JT5r1Nlm2Kmd3tzNle3mo+aczI0JSC5oRgQQlbWZ39N5fPRHi+DIBXDjB2/bNwq7+G7Zk35z3ay5GsmHuCSAkc2JgG9F29QGq+CMFzwm4lhAF0QFgJ4C7ZFY6YWXAys+9QsFa2Rlby/XecvWxo7F4gZNlq3J/zqGLbdl8yfdHQw9MJL8GY8T6oG8ofbXvh4VrOIX4sSK9AiNVBH/iPrfZDnNCM9JlqI2uAMSVjIBA8Powge8LeXdQ/qJUrj+O/l1elGpffcBde3jPTtR2eDnE752LOVDAwyg4gsRBpcxYKBCUCLkcUv76Iz9fuXhBtmCvd4TwxO332Mwu8PUmQ48Mzon19bDSzf7169BXEVSrOh4NvfGL+O5uJ729Pl+0z2dcp/lginTZyCpnyJyxUb7focC1rl77rlQf37Apc/efOOvVRngcVN6Rlcxx9Xq4qrziscseOWNWxz7L1/TXzzn4Dc66u9WHgATxMbATXMnYes0vLi9/4Mt3dne7Y3t7/RTiR9Hu7IY7the+Vtnn7FKn+UpeVy8Qh6YqCzYMNrqyMer1PqPyMbnl4f+XjgMACxdC0RNLrQadusZQSyCDsXtAejEESbVT5hxsvN8zW/HY9xpSqGKkWg35mfNvdp32lLzfBzOU69UYCFWfXmtN184z+p4bj+6djFdjjifNem2w5idQWCWMxHooGRTtFAFsZkQ9lpo/4BL5zkM1LoFBH6Q58TIWmHAJBHfBYCG0OQTLJTC4HMS5B79KIb8CMV2pIkWQiISSISsbqxvyz9obH7xgPAZ1ZDzq9afKe3bs5qetdE7m5Z4DLzMoFqsEjQHEiFJ5jvvn1dencfaXPA3c9Kh0gcj6mQd9NOtwV4V+7wG6AYokKSBFGIyXQ+WmB35ZEPSUO4c2BRZVhJfXpy11ZTMvz9ULYFPyJEBjQDGi6vHn7p9XX88FyAjIlrCgpWdjrke1qisqsJm++JnQ7x+0zlgSWlj3AghBGmeyILoUQCMVPOXHt0m59sL3n7jPO7KyLPY19SLimiOuIgjWGsM8nJl97eF/4+IFmaxCvjV1qACsoAJZvqaf4EWN+ozCp2N8sUqjYMOWzJvz0/c7QaoI4+m1qWbchGO7QJ4xaxcjuFYVJFutjcFmxvlcr3a3PnojFyOTZavybaIjY71d9tVffTOv+Tsa9fgMTaanNOKE+HtWZnSiC+OmHt+MkzeNivRA8w3mk1nJvCoEbXooohGYcc7aUNN73AGrL2V3t8MybFs3KRZsKMyH1GtNACEj5zcS/yb3qrbDzA3lzovGUxzfjJeqmnpldrdzcm7eeNVos4inABJU86C6WHqg2KN3m7tIBSI7lv/yAfXhc7ZsDTjUzhDAhLqqGH5k/SmzZ42XFyia8VBVw0pXCYZfQJuaCZLqSsaEgK+UVzx6/53dcOMmFBoR6Trq/yfUwhPGih0SxwdElTTOTM9EPjFeXqBotrGIN1JFqGH9hVnJHuRDtOKbuN2KGF/XdSVr/o5LYBYubIRntxWhblSZe1e3kWWrnw/KS4yTwbRtDOoYoPECRWdOrL93dnfDPti2hp7Zti8ygPLEuXtbi0tDrkq0BEawmQgVt8rNDz2OvoG6No4FQS8F0tupFunt9VyyxJRveOCG0B9+tLGh1wgxCgAT5BpWYKvbuB7fbOvn3moMn3CZ2dEPPPc2YBsN6Ej1VDB8uWFQjazXX2rdPxzSB1sPAMBmuEBV+xu+PAZcPAGs9xps2bw22FnnLqoioLLt4C/b1qCbc4zN+IMQGIY+5ToYpjONSJ2KsK8Rph0WVsFlxvq6fiS7dfUdL0Ukr0B6fsaB17uSHBZy9QTskDIu6sC7F0h4Aq+2wjIHyjyK4kyqEYDUZ63Wu7D/7/6AHqCRPMZ2UFff8GdNDeHTmRjkG4mewo5vwM0IjLXmoI1eRdqUsQEBlATIWQFwB57uFrQuqB81gaIK5dkHzYeRMwDAOpOGk6Iet4Xf3hDqPkA5pNBv0MJXhqxkd/f9WU/Wg/fHOSa/qGel8dxbvTLz1HLZHFHLNQjaGzoFPnNPHThyjQcHD0/NAz36VQm8kZWukvT2+s3ToxUIQB/0fTCgz33d56o+D+pzVV+P5zyorw/+rgNcPqSgN3HvghqLxTxt9iHbKqJnts176PbcASJXBj/4lCtb9eaQUK3Z6ACbD+eDihWZU5faQQNp1038M2VSrQYu3n83AU9iXQWQTIRx7nQdQ9fUVNabPsPbiOMTNNa4kIel24Vxd1d8ynVDreOCUsnMzLVRHQsSo0H+6IiLwWQiIuFNcdJN2+PCxpurQ25PsWW7a2DwAsrgAxpsQi5brrtFPX/D0MtDsGXzJ/7EV1W2BdebrRmPX9iLwMqsV1iDD/tcVdL5h3POOOQ0kr0q0UR4awOBvZtmOPX2Bi7pdlS+j4EAxQwx6AoRPsTI48b1+4lx1xzH10BC8EmetucOWzuOb7ZqPB7gBvCjJWt29Mo6wECwUd0K9SS9FtWuQ47GtcYBr4BXcOBI+4LU4NWDcujz737ly6UHSo4NoKxUrAD0jz290Dmzv9ZDDVQlNVbi0pM69KxN3xE/g57A4G/a+A5A1YeazezsULcXNsK/Ww8fsjWrauqLZhyeZe4eQNrPLDK6Jcvw4gUlg/qL+RnlFY/ewG645pKqEYNLfRDfecAP3U6lI1ELcV0tOHqI8ZZKgPQxq4TrmUoHDjzKU/f+0PLXnrxvaxVsbGV3zpQAXrS+HoKFMQHYTMXWhkEMtQyKWLM6Pg2tY/Lbe6A8Y1aHUG7GuvzWoAotpIY2Ta2thg5NnrkmJx36O6FZydiSchqm2lSbVJE7LoFpWNm9ALq37GQLAaBXN0dsNt6ksakuTFursc1aoZPxT6BMtfHG8Y03fGyyNUkR0ZgzH804jPe0d95IGyURRSQ0XZPELAjDjTOa/iTNKKXewD5HmKvVeASg6dxjmLdV03b7TmCnI61388V3Y8Njvce2uq/5t00Ze0uuu904EeCj2vOW2tNYYSckMwALAJTHFCBrUNZDIvIkSWm8Z46HAdghmq6tKP+PAB4RkXUF5acSI47xBgCvA3CfiPx7sYF4bQcA7wWQA7i+MJFbcHIx1isALIrz3tIwtwf7k5wHYM826y3WbACsFZFVLYCdrn8HAIcC6IpjAsCzAPriXp5L7psBYE4Cx9HA2wDoB7BSREKxx3QdJN8JYD8A3xORn6d9WlHK7dz09juSc+M4N4/ynsdIfpHkXgnHmPj5mKa+b42/l+J5WXLt1viba4WQyGH/kfS/LF4rx/O5JPMx7PXD6XzJmncieTnJR4a590mSnyW5M8k5JP97M2B+XdP8Np7/NumzgeSRw0ojkho7a9MESjIkR3MrfvtTkuXYX2OErV1Lx3k4AkESxH4kXnshjnVF/D2L5/+MyFof+328GfmFhCD5MpLPxf6e5DeaxvppHKPeYu+tWnG/S4B+CMlfJ33qyXgFLOrJ9X8luagFLFL4FIe2gd3vkvlNhN/eJGuxTwGb76cE0iqAcw2Ac+PntFPW9L3elJEQAL8A8GMAO0cx1BnvyQE81qQ6dgGwW/xci6JumYgcx8E4to/3ZHH85mhbHtdZXLuC5CoR+TZJ22wMJv2Lz81ZlUKEKoA12LggouizDsDSxAUmyTkA/j+APeLYJq4bANbH9U1PflMAxwO4FMC9AOY3iXoBUGqK+tSHRoXgAfxDFOu2obXEk/yreK+PKjsA6CZ5OICVbWADkNwzUs0MkjPj53sj5RQcfHz8fWbst3ci9l6ZUFrBzeVE5DqSu5I8K/YLcVwleWCyjosTUUWSS5q4dGWypoIrno1IGOCAhOOfSdb0L02i+ifJtd+T3CVZr0mPFmpESN6ZcHnBjVWSx0X4vILkq0meQ/Ke2O/aYj8JvGfFz2+PYxTq58ct4L1nk1Epcd1PN0mIYoyvpeoALVyaVr/f3YT4g4axavdqgXjXpv+1sU9/PP/FJiJekw3eGwnNJmJwrIjfqZ01XNghiT49LgGwT22IYWA0Zzhrm+T8JqR9v00/07SPDyT7eIbk8kQ11Ejul9pRA1HtKDYkofBChzUTRDm9XhzD+NI24XZDsiMisK+5WGozoo4uitnDAHwxirNNDf+HVh7C4F8jk9TyPy2uvZjvpyJyZbJfSWDqRIQisjrxNlJ4ZxHe5Y0yDhvDWwp8AQjRUD0/UVH/Hr+vi99LAD4Q9yQbZTniwgqnv53zz/R6/MxhAh41EQki4mP/fhHJAfxJQRhxMf+9idmZJ+ORRV14Nsn3iUi+Cb6yANiZ5HSSOzYd0wt4RH1qIqGlb1JbHueUuF8mMPUFoguiagNvtqC2IfBOiNLGz+8GsG+C+BtE5AUAt0UYBQCnRxWhKVy2VP63RLIripn9SR5A8miS/wjgz6IRYqOfe087dTMCoh4HcHLcnIljfp7kUREobgyc/nIAPwPwWwAPJscDAH4bXdVSYqTulRAvAPw8ztm67j4i+iWEb4HED8U5bZSk342/f6GIGALYCcB5cX12SyKeAGYAuD8upjh+COB9iTdhAFwmIs9vorh/mYjcDeDCOJ7G8wqSL4uWtRmDBNkTwCuajlfG8ykAZsW+0wB0NCH+BYytQmxzInQ2EtFCAEdEghcA10UiLgNYBeCeKA0VwHkkd4zqQbYkxxf610XgFC6Tj4t7FsDfiMi1kds35alXTzITkc8DuCkSTy0S3U1xnvASEDEArATwVOJyhqGJdmRbt2YVAHBxQnxPAfhCVK390db537GvjwR8asr1W6oQoz+KTg9gVwAHJwTxBwB/ISJ3F/7lJoj6ATEd7z0v+sXzo74/HsDnIteP1Gxc0zsBrC389KY+DxdhZgDPxWPHRM3MJHlfQuBbjNujmD8YwFsT4/IhAG+Oxp4mkmltjCUQwAdj1M9vKcQLgCdE5OhkwacDWB4n3Q3AP5F8C4BHNwPpg5XXIutJLoribXoEyDlNlvdwLQdwj4j4EZIgIiL9JH8bJUsB5ONF5PZWe2nK2rFlIGUswG14BRfGPfm4hmMAfLOdpxL7zAPwLhH5OklntmC6t1T4viJyA4DbI6HVAcwFcE2Ti7SpgNDoMv0GwJkRyBwm8dJOx+8S11yO5/TImmyib8Wxi7lOITlPROqJS+fi3pl4N2EzuN1Ebt8bwIlJ1NGMIM1SGBTqQbdkVWdhyRbBg0sjZ2WRUt9F8g2b6XunIt+JyG0ArooEFsaY435GROrRDa03HXnUj8WYNwN4Pq5bo5T5JsljEiT7qMbKMT7/ZZJvGi5oNhJxxjX8VRTjhZr5VZR0K2MouDhWAvgpgN/FdQYAR5J8o4ioG4URMVajo/lziIvuI3l9zAsUMfSropjStk8fjH5NBfIvIbkAwFuakN9uLAKYRvL9ADa0eCJPoq3wr1GlOBH5PcmPAvjHJAcwF8APSP4wejQvApgZU8xzY59FJOeKyDPDpkyb1htjAJ7kzlGFFX9K9REAC0SkNoykODp6VMU9FwK4240g/jQeI4mUIpihbWr54t/ywRXR9+6IADua5NtF5FuJaApxnFaSQNoZT1H3Ff7tqdGlmRkNTWmxJpdY6DtE33e49ikAH05cqmtJHgDggsROMJGQj2lh7HbEJJZLkz1t4K1N8C6u/SWA3SOBdgK4TkRqURX5NlLiRyR/CuDwuMa3kTzUDFOAuSHJOEksZmjX1jURiC98xiR4YUTk8ZjlcgkA3piM84eI7Gnx/FzTmnwyRyjCn0lErJjnmagHQwR46jIWxLQ6rqE8Srd2ZkJkIXLhhQD+GsDvI5zaqayOCL/zROSptIAjQf4LcR2leH6xBRO9Pp47I37+qQjfJtHCgSO595oElx0AjhouCfB6kqtigcHl7XRT0v88kg/F/PSfNWeFkvh0KSZqHonJlYOT67uQ/L8k15D8Jsnd4u9FQuJ4kg+QfDBa8S0zT0ky5YS4nj6SRyX5dIkZxS+SvC0e/9LmuC1G7rqaYZDsfQ+S/4vkv5H8TcyWPRPh8W2SF0WjrF0SqMj4XUny0ZiMel1yrZjnKJL3xyTY6aOxF5I4/+fi2N8r1jKSNVkeg+WZjab+bKRxSXaMULvmRmkFI82qbUHfunl9O8c0dDZc302Fd5KtlDGutTxa92EsC7YjpXrRojixaR5pri4ZZk1mc9ZUSJKIqNEcI+3JtZOI7a6NFYZj3X8bRhhdwedYqGosVaTD9Rvp2pZa00tYdSubOu9I92zOfrYmHKbaVJtqU22qTbWptm3a/wBwfQlhsNmvNQAAAABJRU5ErkJggg==" alt="Trinecta">
+  <span>CNPJ [00.000.000/0001-00] · [Endereço] · Protótipo de teste</span>
+</div></footer>
+
+<script src="videos/tempos.js"></script>
+<script>
+(function(){
+  /* ================= CONFIGURAÇÃO ================= */
+  var ZAP = 'https://wa.me/?text=';   // troque por https://wa.me/55DDDNUMERO?text=
+  var VELOCIDADE = 1.8;                // 1 = normal. 1.8 = quase o dobro (mais rápido para passar os serviços)
+  var PARA_APOS_MS = 180;              // parou de rolar por este tempo = pausa
+  var SEGURA_NA_PAUSA_MS = 450;        // no fim de cada serviço ele segura (olhando para a câmera)
+  var CENAS = [
+    {nome:'Elétrica', palavra:'ELÉTRICA', icone:'eletrica', sub:'Projeto e instalação completa', link:'#servico-eletrica',
+     titulo:'Elétrica do projeto <em>à entrega.</em>', texto:'Projeto, instalação completa e manutenção para obras, prédios e condomínios. Residências também.',
+     itens:[['projetos','Projeto e instalação completa'],['quadro-eletrico','Quadros, prumadas e áreas comuns']]},
+    {nome:'Ar-condicionado', palavra:'AR', icone:'ar-condicionado', sub:'Infraestrutura e instalação', link:'#servico-ar',
+     titulo:'Climatização <em>pronta para usar.</em>', texto:'Infraestrutura na obra, instalação e contratos de manutenção para empresas, condomínios e residências.',
+     itens:[['ar-condicionado','Infraestrutura e instalação'],['manutencao-preventiva','Contratos de manutenção']]},
+    {nome:'Hidráulica', palavra:'HIDRÁULICA', icone:'hidraulica', sub:'Sistema hidráulico completo', link:'#servico-hidraulica',
+     titulo:'Todo o sistema hidráulico, <em>do projeto à obra.</em>', texto:'Água fria e quente, esgoto e pluvial em construções, reformas e prédios inteiros.',
+     itens:[['hidraulica','Projeto e execução da tubulação'],['caixa-dagua','Reservatórios, bombas e prumadas']]},
+    {nome:'Desentupimento', palavra:'DESENTUPIR', icone:'desentupimento', sub:'Predial e residencial', link:'#servico-desentupimento',
+     titulo:'Desentupimento <em>predial.</em>', texto:'Colunas, prumadas, redes e caixas de gordura em condomínios, prédios e comércios.',
+     itens:[['ralo-esgoto','Colunas e redes de esgoto'],['caixa-de-gordura','Caixas de gordura e inspeção']]},
+    {nome:'Projetos', palavra:'PROJETOS', icone:'projetos', sub:'Construção e reforma', link:'#servico-projetos',
+     titulo:'Projeto completo <em>para a sua obra.</em>', texto:'Elétrica e hidráulica planejadas juntas, com cronograma e valor aprovados por escrito.',
+     itens:[['projetos','Projeto elétrico e hidráulico'],['no-prazo','Cronograma e entrega']]}
+  ];
+  /* ================================================= */
+
+  var $ = function(id){ return document.getElementById(id); };
+  var mobile = matchMedia('(max-width:700px)').matches;
+  var reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hero = $('hero'), palavra = $('palavra'), dica = $('dica'), prog = $('prog'), carregando = $('carregando');
+  var A = $('ida'), B = $('volta');                  // A toca para frente, B é o mesmo vídeo invertido
+  var sufixo = mobile ? '-720.mp4' : '-1080.mp4';
+  /* reserva na nuvem: usada quando a pasta "videos" está vazia (sem rodar o .bat) */
+  var NUVEM = {"ida1080": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/9de64144-12a6-4354-a58c-4a59a9af8b8f.mp4", "volta1080": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/850c18bf-57c1-4fff-aaca-6c0c7396dd8a.mp4", "ida720": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/9ecbf471-0bc0-44af-b25d-e0341005ba17.mp4", "volta720": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/84eaf2be-6ee0-4ef2-9177-c288e8004434.mp4", "tempos": [8, 10.125, 10.125, 10.125]};
+  if (!window.TEMPOS) window.TEMPOS = NUVEM.tempos;
+  [[A, 'ida'], [B, 'volta']].forEach(function(par){
+    var v = par[0], nome = par[1];
+    v.addEventListener('error', function(){
+      if (v.dataset.nuvem) return;
+      v.dataset.nuvem = '1'; v.src = NUVEM[nome + (mobile ? '720' : '1080')]; v.load();
+    });
+    v.src = 'videos/' + nome + sufixo;
+  });
+  A.playbackRate = B.playbackRate = VELOCIDADE;
+  A.defaultPlaybackRate = B.defaultPlaybackRate = VELOCIDADE;
+  var QUADRO = 1 / 30;
+
+  var D = 0, MARC = [0, 0, 0, 0, 0];             // início, fim de cada clipe (pausas) e fim
+  var mostrando = A, trocando = false;
+  var dir = 0, ultimoGesto = 0, seguraAte = 0, terminou = false, autoAte = null, tAnterior = 0;
+  var cenaMostrada = -1;
+
+  function marcar(){
+    D = Math.min(A.duration || 0, B.duration || A.duration || 0);
+    var dur = (window.TEMPOS && TEMPOS.length === 4) ? TEMPOS : [1, 1, 1, 1];
+    var soma = dur.reduce(function(a, b){ return a + b; }, 0), acc = 0;
+    MARC = [0];
+    dur.forEach(function(d){ acc += d; MARC.push(D * acc / soma); });
+  }
+
+  /* tempo "para frente", não importa qual dos dois vídeos está na tela */
+  function T(){ return mostrando === A ? A.currentTime : Math.max(0, D - B.currentTime - QUADRO); }
+  function espelho(t){ return Math.max(0, Math.min(D, D - t - QUADRO)); }
+  function alvoDe(v, t){ return v === A ? t : espelho(t); }
+  function exibir(v){ A.classList.toggle('on', v === A); B.classList.toggle('on', v === B); mostrando = v; }
+  function emPosicao(v, t){ return v.readyState >= 2 && !v.seeking && Math.abs(v.currentTime - t) < 0.045; }
+  function posicionar(v, t, cb){
+    if (emPosicao(v, t)){ cb(); return; }
+    var f = function(){ v.removeEventListener('seeked', f); cb(); };
+    v.addEventListener('seeked', f);
+    try { v.currentTime = t; } catch(e){ v.removeEventListener('seeked', f); cb(); }
+  }
+  /* garante que o vídeo da direção certa está na tela. Se o outro já está no quadro certo, troca na hora */
+  function usar(direcao){
+    var v = direcao === 1 ? A : B;
+    if (mostrando === v) return !trocando;
+    if (trocando) return false;
+    var t = T(); mostrando.pause(); trocando = true;
+    posicionar(v, alvoDe(v, t), function(){ exibir(v); trocando = false; });
+    return !trocando;
+  }
+  /* parado: deixa o vídeo escondido no mesmo quadro, pronto para a troca instantânea */
+  function sincronizarEscondido(){
+    if (trocando || !D) return;
+    var o = mostrando === A ? B : A, t = alvoDe(o, T());
+    if (!emPosicao(o, t) && !o.seeking) { try { o.currentTime = t; } catch(e){} }
+  }
+  function pausar(){ if (!A.paused) A.pause(); if (!B.paused) B.pause(); }
+  function tocar(v){ if (v.paused){ v.playbackRate = VELOCIDADE; var p = v.play(); if (p && p.catch) p.catch(function(){}); } }
+
+  /* barra de cima: some no primeiro scroll, volta no início ou quando a pessoa sobe a página */
+  function topo(mostrar){ document.body.classList.toggle('topo-oculto', !mostrar); }
+  function noTopo(){ return window.scrollY <= 2; }
+  function noInicio(){ return T() <= 0.04; }
+
+  function gesto(delta, e){
+    if (!noTopo()) return;
+    if (delta > 0){
+      topo(false);
+      if (terminou) return;
+      if (e && e.cancelable) e.preventDefault();
+      dir = 1;
+    } else if (delta < 0){
+      if (noInicio()){ topo(true); return; }
+      if (e && e.cancelable) e.preventDefault();
+      dir = -1; terminou = false;
+    }
+    autoAte = null;
+    ultimoGesto = performance.now();
+    dica.classList.add('hide');
+    acordar();
+  }
+  addEventListener('wheel', function(e){
+    if (e.ctrlKey) return;
+    gesto(Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX, e);
+  }, {passive:false});
+  var y0 = null;
+  addEventListener('touchstart', function(e){ y0 = e.touches[0].clientY; }, {passive:true});
+  addEventListener('touchmove', function(e){
+    if (y0 === null) return;
+    var y = e.touches[0].clientY, d = y0 - y; y0 = y;
+    if (Math.abs(d) > 0.5) gesto(d, e);
+  }, {passive:false});
+  addEventListener('touchend', function(){ y0 = null; }, {passive:true});
+  var yAnt = 0;
+  addEventListener('scroll', function(){
+    var y = window.scrollY;
+    if (y > 2) topo(y < yAnt);                          // abaixo do hero: desce = some, sobe = aparece
+    document.body.classList.toggle('fora-hero', y > hero.offsetHeight * 0.5);
+    yAnt = y;
+  }, {passive:true});
+
+  /* laço: enquanto há gesto recente, toca para frente (ou o invertido); sem gesto, pausa */
+  var rodando = false;
+  function acordar(){ if (!rodando){ rodando = true; requestAnimationFrame(laco); } }
+  function laco(agora){
+    if (!D){ rodando = false; return; }
+    var ativo = agora - ultimoGesto < PARA_APOS_MS || autoAte !== null;
+    var d = autoAte !== null ? 1 : dir;
+    if (ativo && d === 1 && !terminou){
+      if (agora < seguraAte) pausar();
+      else if (usar(1)) tocar(A);
+    } else if (ativo && d === -1 && !noInicio()){
+      if (usar(-1)) tocar(B);
+    } else pausar();
+
+    var t = T();
+    if (mostrando === A && !A.paused){                    // passou do fim de um serviço: segura um instante
+      for (var k = 1; k <= 3; k++){
+        if (tAnterior < MARC[k] - 0.01 && t >= MARC[k] - 0.01){
+          A.pause(); seguraAte = agora + SEGURA_NA_PAUSA_MS;
+          if (autoAte !== null && MARC[k] >= autoAte - 0.05) autoAte = null;
+        }
+      }
+    }
+    tAnterior = t;
+    desenhar(t);
+    if (ativo || !A.paused || !B.paused || trocando || agora < seguraAte) requestAnimationFrame(laco);
+    else { rodando = false; sincronizarEscondido(); }
+  }
+  A.addEventListener('ended', function(){ terminou = true; autoAte = null; desenhar(D); });
+  B.addEventListener('ended', function(){ desenhar(0); });
+  A.addEventListener('pause', function(){ setTimeout(sincronizarEscondido, 60); });
+  B.addEventListener('pause', function(){ setTimeout(sincronizarEscondido, 60); });
+
+  /* u = posição em "serviços": 0 = elétrica, 1 = ar ... 4 = projetos */
+  function posU(t){
+    for (var c = 0; c < 4; c++){ if (t < MARC[c + 1]) return c + (t - MARC[c]) / Math.max(0.001, MARC[c + 1] - MARC[c]); }
+    return 4;
+  }
+
+  /* ---- textos que sobem ---- */
+  var blocosEl = $('blocos'), blocos = [];
+  CENAS.forEach(function(cn, i){
+    var b = document.createElement('div'); b.className = 'bloco';
+    b.innerHTML = '<span class="num">/0' + (i + 1) + ' — ' + cn.nome.toUpperCase() + '</span><h2>' + cn.titulo + '</h2><p>' + cn.texto + '</p><ul>' +
+      cn.itens.map(function(it){ return '<li><svg aria-hidden="true"><use href="#ic-' + it[0] + '"/></svg>' + it[1] + '</li>'; }).join('') +
+      '</ul><a class="saiba" href="' + cn.link + '" data-pula="1">Saiba mais sobre ' + cn.nome.toLowerCase() + '<svg aria-hidden="true"><use href="#ic-seta-direita"/></svg></a>';
+    blocosEl.appendChild(b); blocos.push({el:b, partes:Array.prototype.slice.call(b.children)});
+  });
+
+  /* ---- partículas e ícones ---- */
+  var ICS = ['eletrica','hidraulica','ar-condicionado','desentupimento','projetos','tomada','chuveiro','check','garantia','testado'];
+  var flut = [], semente = 7;
+  function rnd(){ semente = (semente * 9301 + 49297) % 233280; return semente / 233280; }
+  function criarFlutuantes(alvo, n, frente){
+    for (var i = 0; i < n; i++){
+      var el = document.createElement('i'), z = frente ? 1.1 + rnd() * 0.5 : 0.35 + rnd() * 0.6, icone = rnd() < 0.45;
+      var tam = icone ? Math.round(16 + z * 14) : Math.round(4 + z * 5);
+      el.style.width = el.style.height = tam + 'px';
+      if (icone) el.innerHTML = '<svg><use href="#ic-' + ICS[Math.floor(rnd() * ICS.length)] + '"/></svg>';
+      else { el.className = 'ponto'; el.style.background = rnd() < 0.6 ? 'var(--laranja)' : 'var(--navy)'; }
+      el.style.opacity = frente ? 0.55 : (0.25 + z * 0.45).toFixed(2);
+      var x = rnd(); if (!frente && x > 0.4 && x < 0.6) x = x < 0.5 ? x - 0.18 : x + 0.18;   // longe do rosto
+      if (frente) x = rnd() < 0.5 ? 0.04 + rnd() * 0.18 : 0.78 + rnd() * 0.18;
+      flut.push({el:el, x:x, y:rnd(), z:z, giro:(rnd() - 0.5) * 60});
+      alvo.appendChild(el);
+    }
+  }
+  criarFlutuantes($('flutuaAtras'), mobile ? 12 : 22, false);
+  criarFlutuantes($('flutuaFrente'), mobile ? 3 : 6, true);
+
+  function desenhar(t){
+    var u = D ? posU(t) : 0, W = hero.clientWidth, H = hero.clientHeight;
+    var distancia = H * (mobile ? 0.35 : 0.55);
+    blocos.forEach(function(b, k){
+      var r = k - u, vis = Math.max(0, 1 - Math.abs(r) * 1.7);
+      b.el.style.opacity = vis.toFixed(3);
+      b.el.style.visibility = vis > 0 ? 'visible' : 'hidden';
+      b.el.style.transform = 'translateY(calc(' + (mobile ? '0%' : '-50%') + ' + ' + (r * distancia).toFixed(1) + 'px))';
+      b.partes.forEach(function(p, j){ p.style.transform = 'translateY(' + (r * j * 26).toFixed(1) + 'px)'; });
+    });
+    flut.forEach(function(f){
+      var y = ((f.y * (H + 120) - u * H * 0.9 * f.z) % (H + 120) + (H + 120)) % (H + 120) - 60;
+      f.el.style.transform = 'translate3d(' + (f.x * W).toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) rotate(' + (u * f.giro).toFixed(1) + 'deg)';
+    });
+    $('hEsq').style.opacity = Math.max(0, 1 - u * 3).toFixed(2);
+    var cena = Math.min(4, Math.round(u));
+    if (cena !== cenaMostrada) mostrarCena(cena);
+    prog.style.width = (100 * u / 4).toFixed(2) + '%';
+  }
+
+  /* ---- carregamento ---- */
+  var prontos = 0;
+  function pronto(){ prontos++; carregando.textContent = prontos < 2 ? 'carregando ' + prontos + '/2' : ''; }
+  [A, B].forEach(function(v){
+    v.addEventListener('canplaythrough', function f(){ v.removeEventListener('canplaythrough', f); pronto(); });
+    v.addEventListener('error', function(){ if (v.dataset.nuvem === '1' && v.error && v.currentSrc.indexOf('videos/') < 0){ carregando.textContent = 'Sem internet e sem vídeos locais: rode o comprimir-videos.bat'; carregando.style.color = '#B83E12'; } });
+  });
+  carregando.textContent = 'carregando 0/2';
+  function aoCarregarDados(){
+    if (!(A.duration > 0) || !(B.duration > 0)) return;
+    marcar(); desenhar(T()); sincronizarEscondido();
+  }
+  A.addEventListener('loadedmetadata', aoCarregarDados); B.addEventListener('loadedmetadata', aoCarregarDados);
+  addEventListener('resize', function(){ desenhar(T()); });
+
+  /* ---- navegação ---- */
+  var ant = $('ant'), prox = $('prox'), faixa = $('faixa');
+  CENAS.forEach(function(cn, i){
+    var b = document.createElement('button'); b.type = 'button';
+    b.innerHTML = '<svg aria-hidden="true"><use href="#ic-' + cn.icone + '"/></svg><span><span class="t">' + cn.nome + '</span><span class="s">' + cn.sub + '</span></span>';
+    b.addEventListener('click', function(){ window.scrollTo({top:0, behavior: reduz ? 'auto' : 'smooth'}); pularParaCena(i); });
+    faixa.appendChild(b);
+  });
+  function mostrarCena(i){
+    var primeira = cenaMostrada === -1;
+    cenaMostrada = i; var cn = CENAS[i];
+    $('n').textContent = '0' + (i + 1); $('nome').textContent = cn.nome;
+    palavra.textContent = cn.palavra;
+    trocarSelo(cn, i, primeira);
+    ant.disabled = i === 0; prox.disabled = i === 4;
+    var msg = 'Olá! Quero um orçamento de ' + cn.nome.toLowerCase() + '.';
+    document.querySelectorAll('.zap').forEach(function(a){
+      var m = a.dataset.servico ? 'Olá! Quero um orçamento de ' + a.dataset.servico.toLowerCase() + '.' : msg;
+      a.href = ZAP + encodeURIComponent(m); a.target = '_blank'; a.rel = 'noopener';
+    });
+  }
+  function pularParaCena(i){                     // corte direto para a pausa de um serviço
+    if (!D) return;
+    dir = 0; ultimoGesto = 0; seguraAte = 0; autoAte = null; trocando = false; pausar();
+    terminou = i === 4;
+    var t = i === 4 ? Math.max(0, D - 0.04) : MARC[i];
+    posicionar(A, t, function(){ exibir(A); tAnterior = t; desenhar(i === 4 ? D : t); sincronizarEscondido(); });
+  }
+  function sairDoHero(destino){                  // "Pular animação" / "Saiba mais"
+    pularParaCena(4); topo(false);
+    var alvo = document.querySelector(destino);
+    if (alvo) setTimeout(function(){ alvo.scrollIntoView({behavior: reduz ? 'auto' : 'smooth'}); }, 30);
+  }
+  $('pular').addEventListener('click', function(){ sairDoHero('#faixa'); });
+  blocosEl.addEventListener('click', function(e){
+    var a = e.target.closest('a[data-pula]'); if (!a) return;
+    e.preventDefault(); sairDoHero(a.getAttribute('href'));
+  });
+  ant.addEventListener('click', function(){ pularParaCena(Math.max(0, cenaMostrada - 1)); });
+  prox.addEventListener('click', function(){            // seta: toca até a próxima pausa
+    if (cenaMostrada >= 4 || !D) return;
+    if (reduz){ pularParaCena(cenaMostrada + 1); return; }
+    topo(false); dica.classList.add('hide');
+    autoAte = MARC[Math.min(4, Math.round(posU(T())) + 1)]; seguraAte = 0; terminou = false;
+    acordar();
+  });
+  document.addEventListener('keydown', function(e){
+    if (!noTopo()) return;
+    if (e.key === 'ArrowRight' || (e.key === 'ArrowDown' && !terminou)){ e.preventDefault(); prox.click(); }
+    if (e.key === 'ArrowLeft' || (e.key === 'ArrowUp' && !noInicio())){ e.preventDefault(); ant.click(); }
+  });
+
+  /* ---- selo: o ícone se desfaz (distorção + partículas) e o novo se forma ---- */
+  var seloAnim = null;
+  function trocarSelo(cn, i, imediato){
+    var selo = $('selo'), desloca = $('desloca'), svg = $('seloSvg'), use = $('seloUse');
+    var aplicar = function(){ use.setAttribute('href', '#ic-' + cn.icone); $('seloNum').textContent = '/0' + (i + 1); $('seloNome').textContent = cn.nome; $('seloSub').textContent = cn.sub; };
+    if (imediato || reduz){ aplicar(); return; }
+    if (seloAnim) cancelAnimationFrame(seloAnim);
+    selo.classList.add('trocando'); soltarParticulas();
+    var t0 = performance.now(), DUR = 220, trocou = false;
+    (function passo(agora){
+      var k = Math.min(1, (agora - t0) / (DUR * 2));
+      var fora = k < 0.5, e = fora ? k * 2 : (1 - k) * 2;
+      desloca.setAttribute('scale', (e * 38).toFixed(1));
+      svg.style.opacity = (1 - e).toFixed(2);
+      svg.style.transform = 'scale(' + (1 + e * 0.15).toFixed(3) + ')';
+      if (!fora && !trocou){ trocou = true; aplicar(); selo.classList.remove('trocando'); }
+      if (k < 1) seloAnim = requestAnimationFrame(passo); else { desloca.setAttribute('scale', '0'); svg.style.opacity = 1; svg.style.transform = ''; }
+    })(t0);
+  }
+  function soltarParticulas(){
+    var caixa = $('seloIc');
+    for (var n = 0; n < 14; n++){
+      var p = document.createElement('span'); p.className = 'particula';
+      var ang = Math.random() * Math.PI * 2, dist = 40 + Math.random() * 50;
+      p.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(0) + 'px');
+      p.style.setProperty('--dy', (Math.sin(ang) * dist).toFixed(0) + 'px');
+      p.style.background = n % 3 ? '#FB5821' : '#131D30';
+      caixa.appendChild(p);
+      (function(el){ requestAnimationFrame(function(){ el.classList.add('vai'); }); setTimeout(function(){ el.remove(); }, 800); })(p);
+    }
+  }
+  function medirTopo(){ hero.style.setProperty('--topo-h', $('topo').offsetHeight + 'px'); }
+  medirTopo(); addEventListener('resize', medirTopo);
+  mostrarCena(0); desenhar(0);
+  window.__hero = {T:T, estado:function(){ return {t:+T().toFixed(2), u:+posU(T()).toFixed(2), video:mostrando === A ? 'ida' : 'volta', pausado:A.paused && B.paused, cena:cenaMostrada, terminou:terminou, topoOculto:document.body.classList.contains('topo-oculto'), scrollY:scrollY, MARC:MARC.map(function(x){return +x.toFixed(2);})}; }};
+})();
+</script>
+</body>
+</html>
