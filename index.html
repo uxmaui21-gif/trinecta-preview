@@ -11,11 +11,11 @@
   --estudio:#D2C6C3;          /* fundo do estúdio: ajuste para casar com o vídeo */
   --palavra:#BDB8B2;          /* palavra gigante atrás do personagem */
   --navy:#131D30; --navy-2:#0C1322; --laranja:#FB5821; --laranja-texto:#B83E12;
-  --cinza:#4A5568; --linha:#E2E6EE; --claro:#F5F7FA;
+  --cinza:#4A5568; --linha:#E2E6EE; --gelo:#EEF1F4; --claro:#FFFFFF;
   --icone-cor:currentColor; --icone-destaque:#FB5821;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:'Nunito',system-ui,sans-serif;color:var(--navy);background:#fff}
+body{margin:0;font-family:'Nunito',system-ui,sans-serif;color:var(--navy);background:var(--gelo)}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1280px;margin:0 auto;padding:0 28px}
 .kicker{font-size:13px;font-weight:800;letter-spacing:3px;text-transform:uppercase;line-height:1.7}
@@ -33,7 +33,7 @@ body.topo-oculto .topo-fixo{transform:translateY(-100%)}
 .barra{background:var(--navy);color:#D6DBE6;font-size:13px;font-weight:800}
 .barra .wrap{display:flex;justify-content:space-between;gap:12px;padding-top:8px;padding-bottom:8px}
 .barra b{color:var(--laranja)}
-header{background:var(--estudio);position:relative;z-index:5}
+header{background:#fff;position:relative;z-index:5;box-shadow:0 1px 0 rgba(19,29,48,.06)}
 .cab{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding-top:14px;padding-bottom:14px}
 .cab nav{display:flex;gap:26px;font-weight:800;font-size:15px}
 .cab .logo img{height:52px;width:auto;display:block}
@@ -41,11 +41,11 @@ header{background:var(--estudio);position:relative;z-index:5}
 .cab .dir a.tel{display:flex;align-items:center;gap:8px}
 
 /* ===== Hero: o vídeo toca enquanto a pessoa rola ===== */
-.hero{touch-action:none;-webkit-user-select:none;user-select:none;position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--estudio);--topo-h:118px}
+.hero{touch-action:none;-webkit-user-select:none;user-select:none;position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--estudio);--topo-h:118px;--gut:max(28px,calc((100% - 1224px) / 2))}
 .sobe{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
 body:not(.topo-oculto) .sobe{transform:translateY(var(--topo-h))}
 /* textos que sobem conforme a rolagem */
-.blocos{position:absolute;right:28px;top:0;bottom:0;width:min(430px,33vw);z-index:4;pointer-events:none}
+.blocos{position:absolute;right:var(--gut);top:0;bottom:0;width:min(430px,33vw);z-index:4;pointer-events:none}
 .bloco{position:absolute;left:0;right:0;top:47%;will-change:transform,opacity;background:rgba(255,255,255,.94);border-radius:22px;padding:26px 26px 24px;box-shadow:0 24px 60px rgba(19,29,48,.18),0 2px 0 rgba(19,29,48,.04)}
 @supports (backdrop-filter:blur(8px)){.bloco{background:rgba(255,255,255,.86);backdrop-filter:blur(10px)}}
 .bloco > *{will-change:transform}
@@ -55,7 +55,7 @@ body:not(.topo-oculto) .sobe{transform:translateY(var(--topo-h))}
 .bloco p{margin:0 0 16px;font-size:16.5px;line-height:1.5;color:#3A4558}
 .bloco ul{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:9px}
 .bloco li{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15.5px;color:var(--navy)}
-.bloco li svg{width:30px;height:30px;flex:none;padding:5px;border-radius:9px;background:var(--claro);--icone-cor:var(--navy)}
+.bloco li svg{width:30px;height:30px;flex:none;padding:5px;border-radius:9px;background:var(--gelo);--icone-cor:var(--navy)}
 .saiba{pointer-events:auto;display:inline-flex;align-items:center;gap:10px;background:var(--laranja);color:var(--navy);font-weight:900;font-size:16px;padding:14px 22px 14px 24px;border-radius:999px;min-height:50px;box-shadow:0 10px 24px rgba(251,88,33,.35);transition:transform .2s,box-shadow .2s,background .2s}
 .saiba svg{width:20px;height:20px;--icone-cor:var(--navy);--icone-destaque:var(--navy);transition:transform .2s}
 .saiba:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(251,88,33,.45);background:#FF6A36}
@@ -105,7 +105,7 @@ body:not(.topo-oculto) .sobe{transform:translateY(var(--topo-h))}
   transition:opacity .3s ease, transform .3s ease;user-select:none;z-index:1}
 .palavra.troca{opacity:0;transform:translateY(-52%)}
 .palavra{display:none}          /* palavra gigante desligada: troque para display:block para testar como fundo */
-.selo{position:absolute;left:28px;bottom:28px;z-index:4;display:flex;flex-direction:row;align-items:center;gap:14px;max-width:320px}
+.selo{position:absolute;left:var(--gut);bottom:28px;z-index:4;display:flex;flex-direction:row;align-items:center;gap:14px;max-width:320px}
 .hero{--topo-off:0px}
 body:not(.topo-oculto) .hero{--topo-off:var(--topo-h)}
 .dica .so-mob{display:none}
@@ -123,9 +123,9 @@ body:not(.topo-oculto) .hero{--topo-off:var(--topo-h)}
 .palco video.on{opacity:1}
 .palco::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
   background:linear-gradient(90deg,var(--estudio) 0%,transparent 12%,transparent 88%,var(--estudio) 100%)}
-.h-esq{position:absolute;left:28px;top:28px;z-index:4;max-width:240px;transition:opacity .3s}
+.h-esq{position:absolute;left:var(--gut);top:28px;z-index:4;max-width:240px;transition:opacity .3s}
 .h-esq .traco{width:40px;height:2px;background:var(--navy);margin-top:12px}
-.h-dir{position:absolute;right:28px;top:28px;z-index:4;text-align:right}
+.h-dir{position:absolute;right:var(--gut);top:28px;z-index:4;text-align:right}
 .h-baixo{position:absolute;left:28px;right:28px;bottom:28px;z-index:4;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
 .h-baixo .ctas{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
 h1.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -140,13 +140,14 @@ h1.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .dica{position:absolute;left:50%;bottom:36px;transform:translateX(-50%);z-index:4;background:var(--navy);color:#fff;font-weight:800;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .3s;display:flex;gap:8px;align-items:center}
 .dica.hide{opacity:0}
 .barra-prog{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--laranja);z-index:5}
-.carregando{position:absolute;right:28px;bottom:96px;z-index:4;font-size:12px;font-weight:800;color:var(--cinza)}
+.carregando{position:absolute;right:var(--gut);bottom:96px;z-index:4;font-size:12px;font-weight:800;color:var(--cinza)}
 
 /* Faixa de serviços */
 .faixa{background:var(--navy);color:#fff;position:relative;z-index:6}
 .faixa .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
 .faixa button{all:unset;cursor:pointer;display:flex;align-items:center;gap:14px;padding:22px 18px;border-right:1px solid rgba(255,255,255,.12);min-height:44px}
 .faixa button:last-child{border-right:0}
+.faixa button:first-child{padding-left:0}
 .faixa button svg{width:40px;height:40px;flex:none;--icone-cor:#fff}
 .faixa .t{font-weight:800;font-size:16px;display:block}
 .faixa .s{font-size:13px;color:#AEB6C6;display:block}
@@ -154,13 +155,14 @@ h1.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .faixa button:focus-visible{outline:3px solid var(--laranja);outline-offset:-3px}
 
 /* /01 Destaque */
-.destaque{display:grid;grid-template-columns:1.1fr 1.4fr .7fr;min-height:480px;background:var(--navy-2);color:#fff}
-.destaque .txt{padding:56px 40px;display:flex;flex-direction:column;justify-content:center;gap:18px}
+.destaque-sec{background:var(--navy-2);color:#fff}
+.destaque{display:grid;grid-template-columns:1.1fr 1.4fr .7fr;min-height:480px}
+.destaque .txt{padding:56px 40px 56px 0;display:flex;flex-direction:column;justify-content:center;gap:18px}
 .destaque h2{margin:0;font-size:clamp(34px,3.6vw,52px);line-height:1.02;font-weight:900;text-transform:uppercase}
 .destaque h2 span{color:var(--laranja)}
 .destaque p{margin:0;color:#D6DBE6;font-size:17px;line-height:1.55;max-width:420px}
 .destaque .foto{background-size:cover;background-position:center;min-height:320px}
-.destaque .stats{display:flex;flex-direction:column;justify-content:center;padding:32px;border-left:1px solid rgba(255,255,255,.12)}
+.destaque .stats{display:flex;flex-direction:column;justify-content:center;padding:32px 0 32px 32px;border-left:1px solid rgba(255,255,255,.12)}
 .stat{padding:18px 0;border-bottom:1px solid rgba(255,255,255,.12)}
 .stat:last-child{border-bottom:0}
 .stat b{display:block;font-size:34px;font-weight:900}
@@ -179,7 +181,7 @@ h1.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .card .topo svg{width:30px;height:30px}
 .card h3{margin:0;font-size:20px;font-weight:800}
 .card p{margin:0;color:var(--cinza);line-height:1.5;font-size:15px}
-.precos{background:var(--claro)}
+.precos{background:transparent}
 .produtos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
 .prod{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
 .prod .img{aspect-ratio:4/3;border-radius:6px;background-size:cover;background-position:center;background-color:var(--estudio)}
@@ -188,7 +190,9 @@ h1.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .prod .preco{font-weight:900;font-size:18px}
 .prod .mais{width:40px;height:40px;border-radius:6px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center}
 .prod .mais svg{width:22px;height:22px;--icone-cor:#fff}
-.bq{display:grid;grid-template-columns:1fr 1fr;min-height:520px}
+.bq-sec{padding:0 0 96px}
+.bq{display:grid;grid-template-columns:1fr 1fr;gap:18px;min-height:520px}
+.bq .lado{border-radius:12px;overflow:hidden}
 .bq .lado{position:relative;padding:56px 44px;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;color:#fff;background-size:cover;background-position:center;min-height:420px;background-color:var(--navy)}
 .bq .lado::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,19,34,.1) 20%,rgba(12,19,34,.9) 100%)}
 .bq .lado > *{position:relative}
@@ -197,7 +201,7 @@ h1.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .bq .lado.ev::after{content:"";position:absolute;right:0;top:0;width:38%;height:46%;background:var(--laranja);clip-path:polygon(30% 0,100% 0,100% 100%,0 100%)}
 .bq .lado.ev .tag{position:absolute;right:28px;top:28px;z-index:2;color:var(--navy);font-weight:900;text-transform:uppercase;font-size:20px;line-height:1.1;text-align:right}
 .bairros{display:flex;flex-wrap:wrap;gap:10px}
-.bairros span{border:1px solid var(--linha);border-radius:999px;padding:10px 18px;font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px}
+.bairros span{background:#fff;border:1px solid var(--linha);border-radius:999px;padding:10px 18px;font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px}
 .bairros svg{width:18px;height:18px}
 .faq{max-width:860px}
 .faq details{border-top:1px solid var(--linha);padding:20px 0}
@@ -219,7 +223,7 @@ footer img{height:46px;width:auto}
   .cab{grid-template-columns:auto 1fr}
   .faixa .grid{grid-template-columns:repeat(5,minmax(160px,1fr));overflow-x:auto}
   .destaque{grid-template-columns:1fr 1fr}
-  .destaque .stats{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;border-left:0;border-top:1px solid rgba(255,255,255,.12)}
+  .destaque .stats{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;border-left:0;border-top:1px solid rgba(255,255,255,.12);padding:24px 0}
   .stat{flex:1 1 160px;border-bottom:0}
   .cards,.produtos{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -268,7 +272,10 @@ footer img{height:46px;width:auto}
   .faixa button{flex-direction:column;align-items:flex-start;gap:6px;padding:16px 14px}
   .faixa .s{display:none}
   .destaque{grid-template-columns:1fr}
-  .destaque .txt{padding:40px 22px}
+  .destaque .txt{padding:40px 0}
+  .destaque .foto{margin:0 -20px}
+  .destaque .stats{padding:8px 0 24px}
+  .bq-sec{padding:0 0 64px}
   .sec{padding:64px 0}
   .cards,.produtos{grid-template-columns:1fr}
   .bq{grid-template-columns:1fr}
@@ -378,9 +385,9 @@ footer img{height:46px;width:auto}
 </section>
 <a class="zap-flutua zap" href="#" aria-label="Pedir orçamento no WhatsApp" title="Orçamento no WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16 3.2C9 3.2 3.3 8.8 3.3 15.8c0 2.3.6 4.5 1.8 6.4L3.2 28.8l6.8-1.8c1.8 1 3.9 1.5 6 1.5 7 0 12.7-5.7 12.7-12.7S23 3.2 16 3.2zm0 23.1c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-4 1.1 1.1-3.9-.3-.4c-1.1-1.7-1.6-3.6-1.6-5.6C5.4 10 10.1 5.3 16 5.3S26.6 10 26.6 15.8 21.8 26.3 16 26.3zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.3.3-.6.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.4 3.6 5.8 5.1.8.3 1.4.5 1.9.7.8.3 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg></a>
 
-<nav class="faixa" aria-label="Serviços"><div class="grid" id="faixa"></div></nav>
+<nav class="faixa" aria-label="Serviços"><div class="wrap grid" id="faixa"></div></nav>
 
-<section class="destaque" aria-labelledby="d1">
+<section class="destaque-sec" aria-labelledby="d1"><div class="wrap destaque">
   <div class="txt">
     <div class="num">O DIFERENCIAL</div>
     <h2 id="d1">Precisão em cada detalhe. <span>Bagunça em nenhum.</span></h2>
@@ -389,12 +396,12 @@ footer img{height:46px;width:auto}
   </div>
   <div class="foto" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203533_f797bc40-9aff-444b-bb4c-e6307265ad44.png')" role="img" aria-label="Técnico estendendo proteção no piso"></div>
   <div class="stats">
-    <div class="stat"><b>[X]+</b><span>obras e serviços entregues</span></div>
-    <div class="stat"><b>[X] dias</b><span>de garantia por escrito</span></div>
-    <div class="stat"><b>[X,X] ★</b><span>no Google</span></div>
-    <div class="stat"><b>[X] min</b><span>para chegar no Centro</span></div>
+    <div class="stat"><b>+150</b><span>obras e serviços entregues</span></div>
+    <div class="stat"><b>90 dias</b><span>de garantia por escrito</span></div>
+    <div class="stat"><b>4,9 ★</b><span>no Google</span></div>
+    <div class="stat"><b>30 min</b><span>para chegar no Centro</span></div>
   </div>
-</section>
+</div></section>
 
 <section class="sec" id="servicos" aria-labelledby="s1"><div class="wrap">
   <div class="sec-head">
@@ -487,7 +494,7 @@ footer img{height:46px;width:auto}
   </div>
 </div></section>
 
-<section class="bq" id="banheiro" aria-label="Banheiro químico">
+<section class="bq-sec" id="banheiro" aria-label="Banheiro químico"><div class="wrap bq">
   <a class="lado" href="#" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_172824_e2a24b9a-e1a0-484e-aa13-3a27ef920722.png')">
     <div class="num" style="color:var(--laranja)">BANHEIRO QUÍMICO</div>
     <h3>Para obras</h3>
@@ -500,7 +507,7 @@ footer img{height:46px;width:auto}
     <p>Diga quantas pessoas vão. A gente calcula as cabines, entrega e retira.</p>
     <span class="btn btn-laranja" style="align-self:flex-start">Orçamento para evento</span>
   </a>
-</section>
+</div></section>
 
 <section class="sec" id="areas" aria-labelledby="a1"><div class="wrap">
   <div class="sec-head"><div><div class="num">ONDE ATENDEMOS</div><h2 id="a1">Centro de São Paulo e bairros vizinhos.</h2></div>
@@ -517,7 +524,7 @@ footer img{height:46px;width:auto}
     <details><summary>Vocês fazem a instalação completa da obra?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>Sim. Elétrica e hidráulica do projeto à entrega, em obra nova ou reforma, e a manutenção depois.</p></details>
     <details><summary>O preço pode mudar depois que o serviço começa?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>Não. Você aprova o valor por escrito antes. Se aparecer algo novo, a gente para e pergunta.</p></details>
     <details><summary>Vocês quebram parede ou piso?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>Só quando não tem outro jeito, e sempre avisando antes. O acabamento entra no orçamento.</p></details>
-    <details><summary>Qual é a garantia?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>[X] dias por escrito em todos os serviços.</p></details>
+    <details><summary>Qual é a garantia?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>90 dias por escrito em todos os serviços.</p></details>
     <details><summary>Quais as formas de pagamento?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>[PIX, cartão, parcelamento: confirmar]</p></details>
   </div>
 </div></section>
@@ -836,8 +843,8 @@ footer img{height:46px;width:auto}
       return;
     }
     else {
-      var th = $('topo').offsetHeight, col = Math.min(430, W * 0.33) + 56;
-      x0 = 0; y0 = th + 8; aw = W - col; ah = H - y0 - 96;
+      var th = $('topo').offsetHeight, gut = Math.max(28, (W - 1224) / 2), col = Math.min(430, W * 0.33) + 28;
+      x0 = gut; y0 = th + 8; aw = W - 2 * gut - col; ah = H - y0 - 96;
     }
     var w = Math.min(aw, ah * r), h = w / r;
     s.width = w + 'px'; s.height = h + 'px';
