@@ -28,8 +28,8 @@ a{color:inherit;text-decoration:none}
 .ic{width:24px;height:24px;flex:none}
 
 /* Barra + cabeçalho: fixos por cima do hero; somem no primeiro scroll */
-.topo{position:fixed;left:0;right:0;top:0;z-index:20;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-body.topo-oculto .topo{transform:translateY(-100%)}
+.topo-fixo{position:fixed;left:0;right:0;top:0;z-index:20;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+body.topo-oculto .topo-fixo{transform:translateY(-100%)}
 .barra{background:var(--navy);color:#D6DBE6;font-size:13px;font-weight:800}
 .barra .wrap{display:flex;justify-content:space-between;gap:12px;padding-top:8px;padding-bottom:8px}
 .barra b{color:var(--laranja)}
@@ -41,7 +41,7 @@ header{background:var(--estudio);position:relative;z-index:5}
 .cab .dir a.tel{display:flex;align-items:center;gap:8px}
 
 /* ===== Hero: o vídeo toca enquanto a pessoa rola ===== */
-.hero{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--estudio);--topo-h:118px}
+.hero{-webkit-user-select:none;user-select:none;position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--estudio);--topo-h:118px}
 .sobe{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
 body:not(.topo-oculto) .sobe{transform:translateY(var(--topo-h))}
 /* textos que sobem conforme a rolagem */
@@ -62,15 +62,13 @@ body:not(.topo-oculto) .sobe{transform:translateY(var(--topo-h))}
 .saiba:hover svg{transform:translateX(4px)}
 .saiba:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
 /* WhatsApp flutuante: sempre na tela */
-.zap-flutua{position:fixed;right:28px;bottom:112px;z-index:30;display:inline-flex;align-items:center;gap:12px;background:#25D366;color:#0B2A1A;font-weight:900;font-size:17px;padding:10px 26px 10px 10px;border-radius:999px;min-height:64px;box-shadow:0 16px 36px rgba(18,140,74,.38);animation:flutua 3.2s ease-in-out infinite;transition:bottom .35s,background .2s}
-.zap-flutua .bola{width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none}
-.zap-flutua svg{width:26px;height:26px;--icone-cor:#128C4A;--icone-destaque:#25D366}
-.zap-flutua::after{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid #25D366;animation:onda 3.2s ease-out infinite;pointer-events:none}
-.zap-flutua:hover{background:#2EE072}
+.zap-flutua{position:fixed;right:28px;bottom:28px;z-index:30;width:64px;height:64px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(18,140,74,.4);animation:flutua 3.2s ease-in-out infinite;transition:background .2s}
+.zap-flutua svg{width:36px;height:36px}
+.zap-flutua::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #25D366;animation:onda 3.2s ease-out infinite;pointer-events:none}
+.zap-flutua:hover{background:#1EBE5A}
 .zap-flutua:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
-body.fora-hero .zap-flutua{bottom:28px}
 @keyframes flutua{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-@keyframes onda{0%{opacity:.7;transform:scale(1)}70%,100%{opacity:0;transform:scale(1.18,1.4)}}
+@keyframes onda{0%{opacity:.7;transform:scale(1)}70%,100%{opacity:0;transform:scale(1.45)}}
 /* Serviços */
 .servs{display:flex;flex-direction:column}
 .serv{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;padding:40px 0;border-top:1px solid var(--linha);scroll-margin-top:24px}
@@ -101,13 +99,16 @@ body.fora-hero .zap-flutua{bottom:28px}
 .pular:hover{background:#fff}
 .pular svg{width:18px;height:18px;transform:rotate(90deg)}
 .pular:focus-visible{outline:3px solid var(--laranja);outline-offset:2px}
-.palco{position:absolute;inset:0;background:#fff}
+.palco{position:absolute;inset:0;background:transparent;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent),linear-gradient(180deg,transparent,#000 5%,#000 95%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent),linear-gradient(180deg,transparent,#000 5%,#000 95%,transparent);mask-composite:intersect}
 .palavra{position:absolute;left:0;right:0;top:50%;transform:translateY(-58%);text-align:center;font-weight:900;
   font-size:clamp(80px,17vw,260px);line-height:.85;letter-spacing:-4px;color:var(--palavra);white-space:nowrap;
   transition:opacity .3s ease, transform .3s ease;user-select:none;z-index:1}
 .palavra.troca{opacity:0;transform:translateY(-52%)}
 .palavra{display:none}          /* palavra gigante desligada: troque para display:block para testar como fundo */
-.selo{position:absolute;left:28px;top:50%;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;gap:14px;max-width:260px}
+.selo{position:absolute;left:28px;bottom:28px;z-index:4;display:flex;flex-direction:row;align-items:center;gap:14px;max-width:320px}
+.hero{--topo-off:0px}
+body:not(.topo-oculto) .hero{--topo-off:var(--topo-h)}
+.dica .so-mob{display:none}
 .selo-ic{position:relative;width:104px;height:104px;border-radius:24px;background:var(--navy);display:flex;align-items:center;justify-content:center;box-shadow:0 18px 40px rgba(19,29,48,.18)}
 .selo-ic svg{width:56px;height:56px;--icone-cor:#fff;--icone-destaque:#FB5821;overflow:visible}
 .selo-txt .num{display:block;margin-bottom:4px}
@@ -118,7 +119,7 @@ body.fora-hero .zap-flutua{bottom:28px}
 .particula.vai{animation:voar .7s ease-out forwards}
 @keyframes voar{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.3)}}
 /* Só UM vídeo visível por vez, em modo multiplicar: o cinza do estúdio some e a palavra fica "atrás" */
-.palco video{position:absolute;inset:0;width:100%;height:100%;z-index:2;mix-blend-mode:multiply;object-fit:cover;object-position:50% 55%;opacity:0}
+.palco video{position:absolute;inset:0;width:100%;height:100%;z-index:2;object-fit:cover;object-position:50% 55%;opacity:0}
 .palco video.on{opacity:1}
 .palco::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
   background:linear-gradient(90deg,var(--estudio) 0%,transparent 12%,transparent 88%,var(--estudio) 100%)}
@@ -136,7 +137,7 @@ h1.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .seta{width:46px;height:46px;border-radius:999px;border:0;background:var(--navy);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .seta:disabled{opacity:.3;cursor:default}
 .seta svg{width:22px;height:22px}
-.dica{position:absolute;left:50%;bottom:110px;transform:translateX(-50%);z-index:4;background:var(--navy);color:#fff;font-weight:800;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .3s;display:flex;gap:8px;align-items:center}
+.dica{position:absolute;left:50%;bottom:36px;transform:translateX(-50%);z-index:4;background:var(--navy);color:#fff;font-weight:800;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .3s;display:flex;gap:8px;align-items:center}
 .dica.hide{opacity:0}
 .barra-prog{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--laranja);z-index:5}
 .carregando{position:absolute;right:28px;bottom:96px;z-index:4;font-size:12px;font-weight:800;color:var(--cinza)}
@@ -223,27 +224,24 @@ footer img{height:46px;width:auto}
   .cards,.produtos{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:700px){
-  .selo{top:auto;bottom:150px;left:16px;flex-direction:row;align-items:center;gap:12px}
+  .selo{top:calc(16px + var(--topo-off));bottom:auto;left:16px;gap:12px;transition:top .45s cubic-bezier(.2,.8,.2,1)}
   .selo-ic{width:64px;height:64px;border-radius:16px}
   .selo-ic svg{width:36px;height:36px}
   .selo-txt b{font-size:22px}
   .selo-txt span.sub{display:none}
   .hero{min-height:520px;--topo-h:70px}
-  .blocos{left:16px;right:16px;width:auto;top:86px;bottom:auto;height:auto;transform:none!important}
-  .palco{top:236px;bottom:222px;height:auto;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 90%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 90%,transparent 100%)}
+  .blocos{left:16px;right:86px;width:auto;top:auto;bottom:16px;height:auto;transform:none!important}
+  .palco{top:150px;bottom:176px;height:auto;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 90%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 90%,transparent 100%)}
   .palco video{object-position:45% 50%}
-  body.video-v .palco{top:0;bottom:0;-webkit-mask-image:none;mask-image:none}
   body.video-v .palco video{object-position:50% 50%}
-  .bloco{top:0}
+  .bloco{top:auto;bottom:0}
   .bloco{padding:16px 16px 14px;border-radius:16px}
   .bloco .num{margin-bottom:6px;font-size:11px}
   .bloco h2{font-size:23px;margin-bottom:10px}
   .bloco p,.bloco ul{display:none}
   .saiba{font-size:15px;padding:11px 18px;min-height:44px}
-  .zap-flutua{right:16px;bottom:154px;padding:8px;min-height:0}
-  .zap-flutua .txt{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-  .zap-flutua .bola{width:48px;height:48px}
-  body.fora-hero .zap-flutua{bottom:16px}
+  .zap-flutua{right:16px;bottom:16px;width:58px;height:58px}
+  .zap-flutua svg{width:32px;height:32px}
   .serv{grid-template-columns:1fr;gap:20px;padding:32px 0}
   .publico span{font-size:14px;padding:7px 12px}
   .selo-txt b{white-space:nowrap}
@@ -260,7 +258,10 @@ footer img{height:46px;width:auto}
   .h-baixo .ctas{flex-wrap:nowrap}
   .h-baixo .ctas .btn{flex:1}
   .nav-hero{justify-content:space-between}
-  .dica{bottom:290px}
+  .dica{bottom:190px}
+  .dica .so-desk{display:none}
+  .saiba .sobre{display:none}
+  .dica .so-mob{display:inline}
   .carregando{bottom:auto;top:20px;right:16px}
   .faixa .grid{grid-template-columns:repeat(5,minmax(130px,1fr))}
   .faixa button{flex-direction:column;align-items:flex-start;gap:6px;padding:16px 14px}
@@ -273,15 +274,12 @@ footer img{height:46px;width:auto}
   .wrap{padding:0 20px}
 }
 @media (max-width:700px) and (max-height:720px){
-  .blocos{top:78px}
   .bloco h2{font-size:20px;margin-bottom:8px}
   .saiba{font-size:14px;padding:9px 16px;min-height:40px}
-  .palco{top:200px;bottom:206px}
-  .selo{bottom:140px}
+  .palco{top:120px;bottom:150px}
   .selo-ic{width:52px;height:52px}
   .selo-txt b{font-size:19px}
   .dica{display:none}
-  .zap-flutua{bottom:140px}
 }
 @media (prefers-reduced-motion:reduce){ .palavra{transition:none} .zap-flutua,.zap-flutua::after{animation:none} }
 </style>
@@ -341,7 +339,7 @@ footer img{height:46px;width:auto}
 <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g stroke="var(--icone-destaque,#FB5821)"><path d="M5 12l5 5L20 7"/></g></symbol>
 </svg>
 
-<div class="topo" id="topo">
+<div class="topo-fixo" id="topo">
 <div class="barra"><div class="wrap">
   <span>Elétrica · Hidráulica · Ar-condicionado · Desentupimento · Projetos</span>
   <span class="so-desk">Obras, prédios, condomínios e residências · <b>Do projeto à manutenção</b></span>
@@ -370,30 +368,20 @@ footer img{height:46px;width:auto}
   <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="dissolver" x="-60%" y="-60%" width="220%" height="220%"><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="3" result="ruido"/><feDisplacementMap id="desloca" in="SourceGraphic" in2="ruido" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
   <div class="selo" id="selo" aria-live="polite">
     <div class="selo-ic" id="seloIc"><svg id="seloSvg" filter="url(#dissolver)" aria-hidden="true"><use id="seloUse" href="#ic-eletrica"/></svg></div>
-    <div class="selo-txt"><span class="num" id="seloNum">/01</span><b id="seloNome">Elétrica</b><span class="sub" id="seloSub">Quadros e iluminação</span></div>
+    <div class="selo-txt"><b id="seloNome">Elétrica</b><span class="sub" id="seloSub">Quadros e iluminação</span></div>
   </div>
   <div class="blocos sobe" id="blocos"></div>
-  <div class="dica" id="dica"><svg class="ic" aria-hidden="true" style="transform:rotate(90deg)"><use href="#ic-seta-direita"/></svg>Role para ver os serviços</div>
+  <div class="dica" id="dica"><svg class="ic" aria-hidden="true" style="transform:rotate(90deg)"><use href="#ic-seta-direita"/></svg><span class="so-desk">Role para ver o próximo serviço</span><span class="so-mob">Deslize ou toque nas laterais</span></div>
   <div class="carregando sobe" id="carregando"></div>
-  <div class="h-baixo">
-    <div class="ctas">
-      <button class="pular" id="pular" type="button">Pular animação <span aria-hidden="true" style="font-size:18px">↓</span></button>
-    </div>
-    <div class="nav-hero">
-      <div class="cont"><span id="n">01</span> / 05 <b id="nome" class="sr-nome">Elétrica</b></div>
-      <button class="seta" id="ant" aria-label="Serviço anterior"><svg aria-hidden="true"><use href="#ic-seta-esquerda"/></svg></button>
-      <button class="seta" id="prox" aria-label="Próximo serviço"><svg aria-hidden="true"><use href="#ic-seta-direita"/></svg></button>
-    </div>
-  </div>
   <div class="barra-prog" id="prog"></div>
 </section>
-<a class="zap-flutua zap" href="#" aria-label="Pedir orçamento no WhatsApp"><span class="bola"><svg aria-hidden="true"><use href="#ic-chat-whatsapp"/></svg></span><span class="txt">Orçamento no WhatsApp</span></a>
+<a class="zap-flutua zap" href="#" aria-label="Pedir orçamento no WhatsApp" title="Orçamento no WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16 3.2C9 3.2 3.3 8.8 3.3 15.8c0 2.3.6 4.5 1.8 6.4L3.2 28.8l6.8-1.8c1.8 1 3.9 1.5 6 1.5 7 0 12.7-5.7 12.7-12.7S23 3.2 16 3.2zm0 23.1c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-4 1.1 1.1-3.9-.3-.4c-1.1-1.7-1.6-3.6-1.6-5.6C5.4 10 10.1 5.3 16 5.3S26.6 10 26.6 15.8 21.8 26.3 16 26.3zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.3.3-.6.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.4 3.6 5.8 5.1.8.3 1.4.5 1.9.7.8.3 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg></a>
 
 <nav class="faixa" aria-label="Serviços"><div class="grid" id="faixa"></div></nav>
 
 <section class="destaque" aria-labelledby="d1">
   <div class="txt">
-    <div class="num">/01 — O DIFERENCIAL</div>
+    <div class="num">O DIFERENCIAL</div>
     <h2 id="d1">Precisão em cada detalhe. <span>Bagunça em nenhum.</span></h2>
     <p>Do projeto à manutenção, para construtoras, condomínios, comércios e residências. Obra organizada, área limpa e valor aprovado por escrito antes de começar.</p>
     <a class="btn btn-laranja zap" href="#" style="align-self:flex-start">Falar no WhatsApp</a>
@@ -409,7 +397,7 @@ footer img{height:46px;width:auto}
 
 <section class="sec" id="servicos" aria-labelledby="s1"><div class="wrap">
   <div class="sec-head">
-    <div><div class="num">/02 — SERVIÇOS</div><h2 id="s1">Do projeto à manutenção.</h2></div>
+    <div><div class="num">SERVIÇOS</div><h2 id="s1">Do projeto à manutenção.</h2></div>
     <p>Fazemos a instalação completa, do começo ao fim, e cuidamos dela depois.</p>
   </div>
   <div class="publico">
@@ -474,20 +462,20 @@ footer img{height:46px;width:auto}
 
 <section class="sec" id="como" aria-labelledby="c1"><div class="wrap">
   <div class="sec-head">
-    <div><div class="num">/03 — COMO TRABALHAMOS</div><h2 id="c1">Quatro passos. Nenhuma surpresa.</h2></div>
+    <div><div class="num">COMO TRABALHAMOS</div><h2 id="c1">Quatro passos. Nenhuma surpresa.</h2></div>
     <p>O mesmo processo da obra nova à manutenção, em prédios e residências.</p>
   </div>
   <div class="cards">
-    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203535_896ead70-46f9-4a3a-a273-4332f68451ba.png')"></div><div class="corpo"><div class="topo"><span class="num">01</span><svg aria-hidden="true"><use href="#ic-diagnostico"/></svg></div><h3>Visita técnica</h3><p>Avaliamos o local ou o projeto da obra e explicamos o que precisa ser feito.</p></div></article>
-    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203538_0b2b0127-ecbc-47ec-b685-cb9b45159c90.png')"></div><div class="corpo"><div class="topo"><span class="num">02</span><svg aria-hidden="true"><use href="#ic-valor-aprovado"/></svg></div><h3>Proposta por escrito</h3><p>Escopo, prazo e valor aprovados antes de começar. O preço não muda no meio.</p></div></article>
-    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203535_90a2623e-5315-4664-a740-df795f00830d.png')"></div><div class="corpo"><div class="topo"><span class="num">03</span><svg aria-hidden="true"><use href="#ic-organizacao"/></svg></div><h3>Execução organizada</h3><p>Equipe uniformizada, obra limpa e nada de quebra-quebra desnecessário.</p></div></article>
-    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203535_c0660c56-be9c-469f-9757-83ed2b976da5.png')"></div><div class="corpo"><div class="topo"><span class="num">04</span><svg aria-hidden="true"><use href="#ic-testado"/></svg></div><h3>Teste e entrega</h3><p>Testamos tudo com você e entregamos com garantia por escrito.</p></div></article>
+    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203535_896ead70-46f9-4a3a-a273-4332f68451ba.png')"></div><div class="corpo"><div class="topo"><svg aria-hidden="true"><use href="#ic-diagnostico"/></svg></div><h3>Visita técnica</h3><p>Avaliamos o local ou o projeto da obra e explicamos o que precisa ser feito.</p></div></article>
+    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203538_0b2b0127-ecbc-47ec-b685-cb9b45159c90.png')"></div><div class="corpo"><div class="topo"><svg aria-hidden="true"><use href="#ic-valor-aprovado"/></svg></div><h3>Proposta por escrito</h3><p>Escopo, prazo e valor aprovados antes de começar. O preço não muda no meio.</p></div></article>
+    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203535_90a2623e-5315-4664-a740-df795f00830d.png')"></div><div class="corpo"><div class="topo"><svg aria-hidden="true"><use href="#ic-organizacao"/></svg></div><h3>Execução organizada</h3><p>Equipe uniformizada, obra limpa e nada de quebra-quebra desnecessário.</p></div></article>
+    <article class="card"><div class="img" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_203535_c0660c56-be9c-469f-9757-83ed2b976da5.png')"></div><div class="corpo"><div class="topo"><svg aria-hidden="true"><use href="#ic-testado"/></svg></div><h3>Teste e entrega</h3><p>Testamos tudo com você e entregamos com garantia por escrito.</p></div></article>
   </div>
 </div></section>
 
 <section class="sec precos" id="desentupimento" aria-labelledby="p1"><div class="wrap">
   <div class="sec-head">
-    <div><div class="num">/04 — DESENTUPIMENTO</div><h2 id="p1">Desentupimento predial e residencial.</h2></div>
+    <div><div class="num">DESENTUPIMENTO</div><h2 id="p1">Desentupimento predial e residencial.</h2></div>
     <p>Condomínios, prédios e comércios com atendimento prioritário. Diagnóstico antes e valor aprovado por escrito.</p>
   </div>
   <div class="produtos">
@@ -500,7 +488,7 @@ footer img{height:46px;width:auto}
 
 <section class="bq" id="banheiro" aria-label="Banheiro químico">
   <a class="lado" href="#" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/hf_20261124_172824_e2a24b9a-e1a0-484e-aa13-3a27ef920722.png')">
-    <div class="num" style="color:var(--laranja)">/05 — BANHEIRO QUÍMICO</div>
+    <div class="num" style="color:var(--laranja)">BANHEIRO QUÍMICO</div>
     <h3>Para obras</h3>
     <p>Contrato mensal, limpeza periódica inclusa e dentro das normas de segurança do trabalho.</p>
     <span class="btn btn-laranja" style="align-self:flex-start">Orçamento para obra</span>
@@ -514,7 +502,7 @@ footer img{height:46px;width:auto}
 </section>
 
 <section class="sec" id="areas" aria-labelledby="a1"><div class="wrap">
-  <div class="sec-head"><div><div class="num">/06 — ONDE ATENDEMOS</div><h2 id="a1">Centro de São Paulo e bairros vizinhos.</h2></div>
+  <div class="sec-head"><div><div class="num">ONDE ATENDEMOS</div><h2 id="a1">Centro de São Paulo e bairros vizinhos.</h2></div>
   <p>[confirmar a lista com o cliente]</p></div>
   <div class="bairros">
     <span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Sé</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>República</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Bela Vista</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Consolação</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Liberdade</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Santa Cecília</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Bom Retiro</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Cambuci</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Aclimação</span><span><svg aria-hidden="true"><use href="#ic-localizacao"/></svg>Higienópolis</span>
@@ -522,7 +510,7 @@ footer img{height:46px;width:auto}
 </div></section>
 
 <section class="sec precos" id="faq" aria-labelledby="f1"><div class="wrap">
-  <div class="sec-head"><div><div class="num">/07 — DÚVIDAS</div><h2 id="f1">Perguntas frequentes</h2></div></div>
+  <div class="sec-head"><div><div class="num">DÚVIDAS</div><h2 id="f1">Perguntas frequentes</h2></div></div>
   <div class="faq">
     <details><summary>Vocês atendem condomínios e construtoras?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>Sim. Fazemos projeto, execução e contratos de manutenção para prédios, condomínios, comércios e obras. Também atendemos residências.</p></details>
     <details><summary>Vocês fazem a instalação completa da obra?<svg aria-hidden="true"><use href="#ic-abrir"/></svg></summary><p>Sim. Elétrica e hidráulica do projeto à entrega, em obra nova ou reforma, e a manutenção depois.</p></details>
@@ -549,7 +537,7 @@ footer img{height:46px;width:auto}
 (function(){
   /* ================= CONFIGURAÇÃO ================= */
   var ZAP = 'https://wa.me/?text=';   // troque por https://wa.me/55DDDNUMERO?text=
-  var VELOCIDADE = 2.4;                // velocidade rolando devagar (1 = normal)
+  var VELOCIDADE = 3.4;                // velocidade de cada passo (1 = normal)
   var TURBO = 3.4;                     // velocidade máxima rolando rápido
   var PARA_APOS_MS = 180;              // parou de rolar por este tempo = pausa
   var SEGURA_NA_PAUSA_MS = 300;        // no fim de cada serviço ele segura (olhando para a câmera)
@@ -596,7 +584,7 @@ footer img{height:46px;width:auto}
   function carregar(m){
     if (m === modo) return;
     if (modo !== null && D) uRetomar = Math.max(0.0001, posU(T()));
-    modo = m; document.body.classList.toggle('video-v', m === 'v');
+    modo = m; document.body.classList.toggle('video-v', m === 'v'); dimensionarPalco();
     var f = fontes(m); temposAtuais = f.tempos;
     D = 0; trocando = false; pausar(); prontos = 0; carregando.textContent = 'carregando 0/2';
     A.style.objectPosition = B.style.objectPosition = '';
@@ -653,7 +641,7 @@ footer img{height:46px;width:auto}
   function pausar(){ if (!A.paused) A.pause(); if (!B.paused) B.pause(); }
   function taxa(){ return VELOCIDADE + Math.min(1, forca / 900) * (TURBO - VELOCIDADE); }
   function tocar(v){
-    var r = autoAte !== null ? VELOCIDADE : taxa();
+    var r = VELOCIDADE;
     if (Math.abs(r - taxaAtual) > 0.2 || v.playbackRate !== taxaAtual){ taxaAtual = Math.round(r * 5) / 5; v.playbackRate = taxaAtual; }
     if (v.paused){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
   }
@@ -663,36 +651,77 @@ footer img{height:46px;width:auto}
   function noTopo(){ return window.scrollY <= 2; }
   function noInicio(){ return T() <= 0.04; }
 
-  function gesto(delta, e){
-    if (!noTopo()) return;
-    if (delta > 0){
-      topo(false);
-      if (terminou) return;
-      if (e && e.cancelable) e.preventDefault();
-      dir = 1;
-    } else if (delta < 0){
-      if (noInicio()){ topo(true); return; }
-      if (e && e.cancelable) e.preventDefault();
-      dir = -1; terminou = false;
-    }
-    autoAte = null;
-    forca += Math.min(400, Math.abs(delta) * (e && e.type === 'touchmove' ? 5 : 1));
-    ultimoGesto = performance.now();
-    dica.classList.add('hide');
-    acordar();
+  /* cada rolada (ou deslize, ou toque) leva ao próximo serviço; o vídeo toca sozinho até a pausa */
+  var alvo = null;                                   // {t: tempo de chegada, d: 1 frente / -1 trás}
+  function indice(){ return Math.max(0, Math.min(4, Math.round(posU(T())))); }
+  function avancar(){
+    if (!D || alvo || trocando) return false;
+    var i = indice(); if (i >= 4){ terminou = true; return false; }
+    terminou = false; dica.classList.add('hide'); topo(false);
+    alvo = {t: i + 1 >= 4 ? D : MARC[i + 1], d: 1};
+    if (reduz){ var k = i + 1; alvo = null; pularParaCena(k); return true; }
+    acordar(); return true;
   }
+  function voltar(){
+    if (!D || alvo || trocando) return false;
+    var i = indice(); if (i <= 0 && noInicio()) return false;
+    terminou = false;
+    alvo = {t: MARC[Math.max(0, i - 1)], d: -1};
+    if (reduz){ var k = Math.max(0, i - 1); alvo = null; pularParaCena(k); return true; }
+    acordar(); return true;
+  }
+  var ultimaRoda = 0, rodaUsada = false;
   addEventListener('wheel', function(e){
     if (e.ctrlKey) return;
-    gesto(Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX, e);
+    var agora = performance.now(), novo = agora - ultimaRoda > 220; ultimaRoda = agora;
+    if (novo) rodaUsada = false;
+    if (!noTopo()){ rodaUsada = true; return; }          // rolada que veio de baixo da página não mexe no vídeo
+    var d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    if (d > 0){
+      topo(false);
+      if (terminou && !alvo) return;                    // vídeo no fim: a página desce normalmente
+      if (e.cancelable) e.preventDefault();
+      if (!rodaUsada){ rodaUsada = true; avancar(); }
+    } else if (d < 0){
+      if (noInicio() && !alvo){ topo(true); return; }
+      if (e.cancelable) e.preventDefault();
+      if (!rodaUsada){ rodaUsada = true; voltar(); }
+    }
   }, {passive:false});
-  var y0 = null;
-  addEventListener('touchstart', function(e){ y0 = e.touches[0].clientY; }, {passive:true});
+  var y0 = null, toqueUsado = false;
+  addEventListener('touchstart', function(e){ y0 = e.touches[0].clientY; toqueUsado = !noTopo(); }, {passive:true});
   addEventListener('touchmove', function(e){
-    if (y0 === null) return;
-    var y = e.touches[0].clientY, d = y0 - y; y0 = y;
-    if (Math.abs(d) > 0.5) gesto(d, e);
+    if (y0 === null || !noTopo()) return;
+    var d = y0 - e.touches[0].clientY;
+    if (Math.abs(d) < 12) return;
+    if (d > 0){
+      if (terminou && !alvo) return;
+      if (e.cancelable) e.preventDefault();
+      if (!toqueUsado){ toqueUsado = true; avancar(); }
+    } else {
+      if (noInicio() && !alvo) return;
+      if (e.cancelable) e.preventDefault();
+      if (!toqueUsado){ toqueUsado = true; voltar(); }
+    }
   }, {passive:false});
   addEventListener('touchend', function(){ y0 = null; }, {passive:true});
+  /* celular: um toque no lado direito avança (tocando o vídeo), no esquerdo volta.
+     computador: dois cliques no lado direito/esquerdo pulam direto para a pose do serviço seguinte/anterior */
+  var mouseFino = matchMedia('(hover: hover) and (pointer: fine)');
+  function foraDosBotoes(e){ return !e.target.closest('a,button,.selo,.bloco'); }
+  hero.addEventListener('click', function(e){
+    if (mouseFino.matches || !foraDosBotoes(e) || !noTopo()) return;
+    if (e.clientX > hero.clientWidth / 2){
+      if (!avancar() && indice() >= 4 && !alvo) sairDoHero('#faixa');
+    } else voltar();
+  });
+  hero.addEventListener('dblclick', function(e){
+    if (!mouseFino.matches || !foraDosBotoes(e) || !noTopo() || !D || alvo) return;
+    var i = indice();
+    if (e.clientX > hero.clientWidth / 2){
+      if (i >= 4) sairDoHero('#faixa'); else { topo(false); dica.classList.add('hide'); pularParaCena(i + 1); }
+    } else if (i > 0) pularParaCena(i - 1);
+  });
   var yAnt = 0;
   addEventListener('scroll', function(){
     var y = window.scrollY;
@@ -706,31 +735,21 @@ footer img{height:46px;width:auto}
   function acordar(){ if (!rodando){ rodando = true; requestAnimationFrame(laco); } }
   function laco(agora){
     if (!D){ rodando = false; return; }
-    forca *= 0.9;
-    var ativo = agora - ultimoGesto < PARA_APOS_MS || autoAte !== null;
-    var d = autoAte !== null ? 1 : dir;
-    if (ativo && d === 1 && !terminou){
-      if (agora < seguraAte) pausar();
-      else if (usar(1)) tocar(A);
-    } else if (ativo && d === -1 && !noInicio()){
-      if (usar(-1)) tocar(B);
-    } else pausar();
-
     var t = T();
-    if (mostrando === A && !A.paused){                    // passou do fim de um serviço: segura um instante
-      for (var k = 1; k <= 3; k++){
-        if (tAnterior < MARC[k] - 0.01 && t >= MARC[k] - 0.01){
-          A.pause(); seguraAte = agora + SEGURA_NA_PAUSA_MS;
-          if (autoAte !== null && MARC[k] >= autoAte - 0.05) autoAte = null;
-        }
-      }
-    }
+    if (alvo && alvo.d === 1){
+      if (t >= alvo.t - 0.03 || A.ended){ pausar(); terminou = alvo.t >= D - 0.05; alvo = null; }
+      else if (usar(1)) tocar(A);
+    } else if (alvo && alvo.d === -1){
+      if (t <= alvo.t + 0.03 || B.ended){ pausar(); alvo = null; }
+      else if (usar(-1)) tocar(B);
+    } else pausar();
+    t = T();
     tAnterior = t;
     desenhar(t);
-    if (ativo || !A.paused || !B.paused || trocando || agora < seguraAte) requestAnimationFrame(laco);
+    if (alvo || trocando || !A.paused || !B.paused) requestAnimationFrame(laco);
     else { rodando = false; sincronizarEscondido(); }
   }
-  A.addEventListener('ended', function(){ terminou = true; autoAte = null; desenhar(D); });
+  A.addEventListener('ended', function(){ terminou = true; desenhar(D); });
   B.addEventListener('ended', function(){ desenhar(0); });
   A.addEventListener('pause', function(){ setTimeout(sincronizarEscondido, 60); });
   B.addEventListener('pause', function(){ setTimeout(sincronizarEscondido, 60); });
@@ -745,9 +764,9 @@ footer img{height:46px;width:auto}
   var blocosEl = $('blocos'), blocos = [];
   CENAS.forEach(function(cn, i){
     var b = document.createElement('div'); b.className = 'bloco';
-    b.innerHTML = '<span class="num">/0' + (i + 1) + ' — ' + cn.nome.toUpperCase() + '</span><h2>' + cn.titulo + '</h2><p>' + cn.texto + '</p><ul>' +
+    b.innerHTML = '<h2>' + cn.titulo + '</h2><p>' + cn.texto + '</p><ul>' +
       cn.itens.map(function(it){ return '<li><svg aria-hidden="true"><use href="#ic-' + it[0] + '"/></svg>' + it[1] + '</li>'; }).join('') +
-      '</ul><a class="saiba" href="' + cn.link + '" data-pula="1">Saiba mais sobre ' + cn.nome.toLowerCase() + '<svg aria-hidden="true"><use href="#ic-seta-direita"/></svg></a>';
+      '</ul><a class="saiba" href="' + cn.link + '" data-pula="1">Saiba mais<span class="sobre"> sobre ' + cn.nome.toLowerCase() + '</span><svg aria-hidden="true"><use href="#ic-seta-direita"/></svg></a>';
     blocosEl.appendChild(b); blocos.push({el:b, partes:Array.prototype.slice.call(b.children)});
   });
 
@@ -765,7 +784,7 @@ footer img{height:46px;width:auto}
       el.style.opacity = frente ? 0.55 : (0.25 + z * 0.45).toFixed(2);
       var x = rnd(); if (!frente && x > 0.4 && x < 0.6) x = x < 0.5 ? x - 0.18 : x + 0.18;   // longe do rosto
       if (frente) x = rnd() < 0.5 ? 0.04 + rnd() * 0.18 : 0.78 + rnd() * 0.18;
-      flut.push({el:el, x:x, y:rnd(), z:z, giro:(rnd() - 0.5) * 60});
+      flut.push({el:el, x:x, y:rnd(), z:z, giro:(rnd() - 0.5) * 60, frente:frente});
       alvo.appendChild(el);
     }
   }
@@ -790,6 +809,20 @@ footer img{height:46px;width:auto}
     p = Math.max(0, Math.min(1, p));
     A.style.objectPosition = B.style.objectPosition = (p * 100).toFixed(2) + '% 50%';
   }
+  function dimensionarPalco(){
+    var s = palcoEl.style;
+    if (mobile && modo !== 'v'){ s.left = s.top = s.width = s.height = ''; return; }   // celular sem vídeo vertical: faixa com enquadramento
+    var W = hero.clientWidth, H = hero.clientHeight, r = modo === 'v' ? 9 / 16 : 16 / 9, x0, y0, aw, ah;
+    if (mobile){ x0 = 0; y0 = 150; aw = W; ah = H - 150 - 176; }
+    else {
+      var th = $('topo').offsetHeight, col = Math.min(430, W * 0.33) + 56;
+      x0 = 0; y0 = th + 8; aw = W - col; ah = H - y0 - 96;
+    }
+    var w = Math.min(aw, ah * r), h = w / r;
+    s.width = w + 'px'; s.height = h + 'px';
+    s.left = (x0 + (aw - w) / 2) + 'px'; s.top = (y0 + (ah - h) / 2) + 'px';
+    s.right = s.bottom = 'auto';
+  }
   function desenhar(t){
     enquadrar(t);
     var u = D ? posU(t) : 0, W = hero.clientWidth, H = hero.clientHeight;
@@ -801,8 +834,10 @@ footer img{height:46px;width:auto}
       b.el.style.transform = 'translateY(calc(' + (mobile ? '0%' : '-50%') + ' + ' + (r * distancia).toFixed(1) + 'px))';
       b.partes.forEach(function(p, j){ p.style.transform = 'translateY(' + (r * j * 26).toFixed(1) + 'px)'; });
     });
+    var pL = palcoEl.offsetLeft, pT = palcoEl.offsetTop, pW = palcoEl.offsetWidth, pH = palcoEl.offsetHeight;
     flut.forEach(function(f){
       var y = ((f.y * (H + 120) - u * H * 0.9 * f.z) % (H + 120) + (H + 120)) % (H + 120) - 60;
+      if (f.frente){ var x = f.x * W, dentro = x > pL - 30 && x < pL + pW + 30 && y > pT - 30 && y < pT + pH; f.el.style.visibility = dentro ? 'hidden' : 'visible'; }
       f.el.style.transform = 'translate3d(' + (f.x * W).toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) rotate(' + (u * f.giro).toFixed(1) + 'deg)';
     });
     $('hEsq').style.opacity = Math.max(0, 1 - u * 3).toFixed(2);
@@ -835,10 +870,10 @@ footer img{height:46px;width:auto}
   var trocaModo = function(){ carregar(modoCerto()); };
   if (emPe.addEventListener) emPe.addEventListener('change', trocaModo); else emPe.addListener(trocaModo);
   A.addEventListener('loadedmetadata', aoCarregarDados); B.addEventListener('loadedmetadata', aoCarregarDados);
-  addEventListener('resize', function(){ desenhar(T()); });
+  addEventListener('resize', function(){ dimensionarPalco(); desenhar(T()); });
 
   /* ---- navegação ---- */
-  var ant = $('ant'), prox = $('prox'), faixa = $('faixa');
+  var faixa = $('faixa');
   CENAS.forEach(function(cn, i){
     var b = document.createElement('button'); b.type = 'button';
     b.innerHTML = '<svg aria-hidden="true"><use href="#ic-' + cn.icone + '"/></svg><span><span class="t">' + cn.nome + '</span><span class="s">' + cn.sub + '</span></span>';
@@ -848,10 +883,8 @@ footer img{height:46px;width:auto}
   function mostrarCena(i){
     var primeira = cenaMostrada === -1;
     cenaMostrada = i; var cn = CENAS[i];
-    $('n').textContent = '0' + (i + 1); $('nome').textContent = cn.nome;
     palavra.textContent = cn.palavra;
     trocarSelo(cn, i, primeira);
-    ant.disabled = i === 0; prox.disabled = i === 4;
     var msg = 'Olá! Quero um orçamento de ' + cn.nome.toLowerCase() + '.';
     document.querySelectorAll('.zap').forEach(function(a){
       var m = a.dataset.servico ? 'Olá! Quero um orçamento de ' + a.dataset.servico.toLowerCase() + '.' : msg;
@@ -860,7 +893,7 @@ footer img{height:46px;width:auto}
   }
   function pularParaCena(i){                     // corte direto para a pausa de um serviço
     if (!D) return;
-    dir = 0; ultimoGesto = 0; seguraAte = 0; autoAte = null; trocando = false; pausar();
+    alvo = null; trocando = false; pausar();
     terminou = i === 4;
     var t = i === 4 ? Math.max(0, D - 0.04) : MARC[i];
     posicionar(A, t, function(){ exibir(A); tAnterior = t; desenhar(i === 4 ? D : t); sincronizarEscondido(); });
@@ -870,30 +903,21 @@ footer img{height:46px;width:auto}
     var alvo = document.querySelector(destino);
     if (alvo) setTimeout(function(){ alvo.scrollIntoView({behavior: reduz ? 'auto' : 'smooth'}); }, 30);
   }
-  $('pular').addEventListener('click', function(){ sairDoHero('#faixa'); });
   blocosEl.addEventListener('click', function(e){
     var a = e.target.closest('a[data-pula]'); if (!a) return;
     e.preventDefault(); sairDoHero(a.getAttribute('href'));
   });
-  ant.addEventListener('click', function(){ pularParaCena(Math.max(0, cenaMostrada - 1)); });
-  prox.addEventListener('click', function(){            // seta: toca até a próxima pausa
-    if (cenaMostrada >= 4 || !D) return;
-    if (reduz){ pularParaCena(cenaMostrada + 1); return; }
-    topo(false); dica.classList.add('hide');
-    autoAte = MARC[Math.min(4, Math.round(posU(T())) + 1)]; seguraAte = 0; terminou = false;
-    acordar();
-  });
   document.addEventListener('keydown', function(e){
     if (!noTopo()) return;
-    if (e.key === 'ArrowRight' || (e.key === 'ArrowDown' && !terminou)){ e.preventDefault(); prox.click(); }
-    if (e.key === 'ArrowLeft' || (e.key === 'ArrowUp' && !noInicio())){ e.preventDefault(); ant.click(); }
+    if (e.key === 'ArrowRight' || (e.key === 'ArrowDown' && !terminou)){ e.preventDefault(); avancar(); }
+    if (e.key === 'ArrowLeft' || (e.key === 'ArrowUp' && !noInicio())){ e.preventDefault(); voltar(); }
   });
 
   /* ---- selo: o ícone se desfaz (distorção + partículas) e o novo se forma ---- */
   var seloAnim = null;
   function trocarSelo(cn, i, imediato){
     var selo = $('selo'), desloca = $('desloca'), svg = $('seloSvg'), use = $('seloUse');
-    var aplicar = function(){ use.setAttribute('href', '#ic-' + cn.icone); $('seloNum').textContent = '/0' + (i + 1); $('seloNome').textContent = cn.nome; $('seloSub').textContent = cn.sub; };
+    var aplicar = function(){ use.setAttribute('href', '#ic-' + cn.icone); $('seloNome').textContent = cn.nome; $('seloSub').textContent = cn.sub; };
     if (imediato || reduz){ aplicar(); return; }
     if (seloAnim) cancelAnimationFrame(seloAnim);
     selo.classList.add('trocando'); soltarParticulas();
