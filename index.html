@@ -35,13 +35,16 @@ body.topo-oculto .topo-fixo{transform:translateY(-100%)}
 .barra b{color:var(--laranja)}
 header{background:#fff;position:relative;z-index:5;box-shadow:0 1px 0 rgba(19,29,48,.06)}
 .cab{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding-top:14px;padding-bottom:14px}
-.cab nav{display:flex;gap:26px;font-weight:800;font-size:15px}
-.cab .logo img{height:52px;width:auto;display:block}
-.cab .dir{display:flex;justify-content:flex-end;align-items:center;gap:18px;font-weight:800;font-size:15px}
+.cab nav{display:flex;gap:30px;font-weight:900;font-size:17px;letter-spacing:.1px}
+.cab nav a{position:relative;padding:6px 0}
+.cab nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--laranja);transform:scaleX(0);transform-origin:left;transition:transform .2s}
+.cab nav a:hover::after{transform:scaleX(1)}
+.cab .logo img{height:60px;width:auto;display:block}
+.cab .dir{display:flex;justify-content:flex-end;align-items:center;gap:18px;font-weight:900;font-size:16px}
 .cab .dir a.tel{display:flex;align-items:center;gap:8px}
 
 /* ===== Hero: o vídeo toca enquanto a pessoa rola ===== */
-.hero{touch-action:none;-webkit-user-select:none;user-select:none;position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--estudio);--topo-h:118px;--gut:max(28px,calc((100% - 1224px) / 2))}
+.hero{touch-action:none;-webkit-user-select:none;user-select:none;position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--estudio);background:linear-gradient(180deg,var(--f-topo,var(--estudio)) 0%,var(--estudio) 50%,var(--f-base,var(--estudio)) 100%);--topo-h:118px;--gut:max(28px,calc((100% - 1224px) / 2))}
 .sobe{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
 body:not(.topo-oculto) .sobe{transform:translateY(var(--topo-h))}
 /* textos que sobem conforme a rolagem */
@@ -99,7 +102,7 @@ body:not(.topo-oculto) .sobe{transform:translateY(var(--topo-h))}
 .pular:hover{background:#fff}
 .pular svg{width:18px;height:18px;transform:rotate(90deg)}
 .pular:focus-visible{outline:3px solid var(--laranja);outline-offset:2px}
-.palco{position:absolute;inset:0;background:transparent;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent),linear-gradient(180deg,transparent,#000 5%,#000 95%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent),linear-gradient(180deg,transparent,#000 5%,#000 95%,transparent);mask-composite:intersect}
+.palco{position:absolute;inset:0;background:transparent;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(180deg,transparent,#000 9%,#000 91%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(180deg,transparent,#000 9%,#000 91%,transparent);mask-composite:intersect}
 .palavra{position:absolute;left:0;right:0;top:50%;transform:translateY(-58%);text-align:center;font-weight:900;
   font-size:clamp(80px,17vw,260px);line-height:.85;letter-spacing:-4px;color:var(--palavra);white-space:nowrap;
   transition:opacity .3s ease, transform .3s ease;user-select:none;z-index:1}
@@ -254,7 +257,7 @@ footer img{height:46px;width:auto}
   .barra{display:none}
   .barra .so-desk{display:none}
   .cab .dir a.tel span{display:none}
-  .cab .logo img{height:40px}
+  .cab .logo img{height:44px}
   .palavra{font-size:clamp(64px,24vw,130px);letter-spacing:-2px;top:46%}
   .palco::after{background:none}
   .h-dir{display:none}
@@ -575,7 +578,21 @@ footer img{height:46px;width:auto}
   var A = $('ida'), B = $('volta');                  // A toca para frente, B é o mesmo vídeo invertido
   /* dois vídeos: horizontal (computador / celular deitado) e vertical (celular em pé).
      Primeiro tenta a pasta "videos"; se não houver, usa a cópia na nuvem. */
-  var NUVEM = {"ida1080": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/46b6bfb5-241f-47e0-b818-3055778e369c.mp4", "volta1080": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/f9084085-4ba2-4f9b-aeb1-cf0d1a9dd5cc.mp4", "ida720": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/0dd5b10a-828f-4491-a410-75337d863dcc.mp4", "volta720": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/502664eb-bde1-4378-ac62-6a2eaa50b88e.mp4", "tempos": [2.367, 2.967, 2.967, 2.967], "idaV": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/96964d72-de78-4697-bbc0-4d5923b873bc.mp4", "voltaV": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/ff24d390-614c-46b2-9d31-75baf6eef595.mp4", "temposV": [2.367, 2.967, 2.967, 2.967]};
+  var NUVEM = {"ida1080": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/51f17695-f555-457d-8aa8-7896914ee9e2.mp4", "volta1080": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/dde2d464-0456-4b00-bf88-4270fdc44d80.mp4", "ida720": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/c75b11a4-2c63-4e78-97ae-bbcd572b9da5.mp4", "volta720": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/933b87a1-5036-45f5-bf6f-9d9c039ef0b4.mp4", "tempos": [2.367, 2.967, 2.967, 2.967], "idaV": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/1ffc1672-95bd-42a7-b5ae-635d35c4e85a.mp4", "voltaV": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/6660d253-1394-4f44-8979-3105f1b67434.mp4", "temposV": [2.367, 2.967, 2.967, 2.967]};
+  var CORES = {"h": "d4c8c7d0c4c2cdc3c1d4c9c7d0c4c2cec3c1d4c9c7d0c4c2cec3c1d4c9c7d0c4c2ccc2c0d3c9c6d0c4c2ccc2c0d3c8c6d0c5c2d0c6c3d1c6c3d1c6c4cfc5c2d0c6c3d2c6c4c1b8b5d0c5c2d1c6c4c2b8b6cfc5c2d0c4c2c0b6b3cec4c1d5cccac1b7b4cec3c1d6cdccc2b8b5cec4c2d2cac8c3b9b7d0c5c4cbc1c0c4bab8cfc5c3ccc0c0c6bcbacfc4c3ccc1c0c8bebccec4c2ccc1c0cbc1bfcac0c0ccc0c0cbc1c0cac0c0ccc0c0cbc1c0cbc0c0ccc0c0cbc1c0cabfbfccc0c0cbc1c0cabfbfccc0c0cbc1c0cabfbfccc0c0cbc1c0cabfbfccc0c0cbc1c0cbc1c1ccc2c2ccc2c1cdc3c2ccc2c2ccc2c1cdc3c3ccc2c2ccc2c1cec4c4ccc2c1ccc2c1cfc5c4ccc2c2ccc2c1cfc5c4ccc2c2ccc2c1cfc5c4ccc2c2cdc3c1cfc5c4ccc2c2cac0bfcfc5c4ccc2c2c7bdbccfc5c4ccc2c2cdc3c2ccc2c1cbc1c0cbc1c0ccc2c1cbc1c0cec4c3ccc2c2cabfbecac0bfbfb6b6c6bcbcc9c0c0c8bebecec7c4c7bebdc4bab9d8d2d2c9c0bfc1b7b6d0c6c7c6bdbdbcb2b1d4cbcbc9c0bfbbb1afd3cacac3bababbb1b0c9bebec5bbbac3b9b8c6bbbac7bdbcc7bdbbc8bdbcc3b9b9c8bebdc9bfbec4bbbbcabfbecac0bfc6bdbcc9c0becbc0c0c7bdbdc9c0beccc0c0c6bdbdc9c0beccc2c0c6bdbdc9c0beccc2c0c6bdbdc9c0beccc2c0c6bdbdcac1c0cec4c4c7bebfc9c0bfccc2c1c7bebec7bebcccc2c1c7bebec7bebcccc2c1c7bebecbc2c0ccc2c1c4bab9cac0bfccc1c0c5b5b4c2b7b6c8bebfcabbbabdb4b4c4bcbdcabebdbbb3b4c3babccec5c5c1b9bac1babbc9c2c2c0b3afc7c0c1c7c0c0ccc4c5cec5c6c7c0c1cdc6c7d4cdcecbc4c5c8c2c0d0cacac4bcbcccc5c6cdc6c8b6aaa9cdc5c7c8c0c2baafaec8c1c2c6bec0b9b0b2c4bdbec8c0c2bcb4b5c4bdbdc9c1c2c1b8b9c4bdbdcac2c2c7bebec5bdbccac2c4ccc2c2cbc5c5cbc3c4cdc3c3ccc5c6ccc3c5ccc2c1cdc4c7ccc4c5cac0c0c7bfc0cdc4c5c9bfbecec5c7cec4c6c9bfbfcec5c7cec5c6c9bfbfcdc4c6cec5c6c9c0bfccc3c5cec5c6c9c0bfccc3c5cec5c6c9c0bfcfc6c6d0c7c8cbc2c2d0c6c7d0c7c8cbc1c2d1c7c8d0c7c8cac1c2d1c8c8d0c7c8cac1c2cec5c5d0c7c8cac1c1cdc4c4d0c6c8cac1c1cdbfbdd0c6c7ccc3c3b0a8accec4c5cdc3c4beaba6ccc2c2cec4c5bbb1b1c8bebecec5c5c5b8b6c4babad1c7c8c0b4b1beb4b3d2c8c9bcb2b0baafaed4cbccbaafadb7acacd2c8c9baafadb7acabd5cccdbaafadb8aeaddad1d1baafadb6acacdad1d2baafadaa9f9ed7cdcebaafadb8acacd6cdcebdb2b0bab0aec4babcc0b5b3c0b5b4bfb6b6c4bab6c4bab8bbb2b2c2b7b4c7bcbaa49d9fc1b7b3c6bcbaa29a9bc2b7b4c6bbbaa49b9cc2b7b4c4bab8a3999bc2b7b4c5babaa3999bc3b8b5c6bbbaa3999bc3b8b5c6bbbaa2999bc3b8b5c6bbbaa2999b", "v": "aea3a0c6b8b6c7bab8aca29ec4b7b4c5b8b6aca29ec4b7b4c5b9b6aca29ec3b7b4c5b9b6aca29ec3b7b4c5b9b6aba19ec6b8b7c6bab8aa9f9ec6bab8c9bebba99f9ec5bab7cbc1beaba09fc4bab6ccc2c0b0a6a4c2b8b5ccc2c2b2a7a6c5bcb9cbc1c0b2a7a6c1b6b4cabfbeaea2a1c3b9b8c5bbbbac9d9bc3b8b8c1b7b6a99a98bcb1b0beb3b2a89997bcb0aebbb0afa79796bbb0aebab0aea79695bbafaebaafaea79695baafaebaafaea79795baafadbaafaea79796baaeadb9afaea79796baaeadb9afaea79795baaeadb9afaea69795baaeadbaafaea69c98b6acaaaca1a0a69c98b6acaaaca1a0a69c98b6acaaaca1a0a69c99b6acaaaca19fa69c99b6abaaaca19fa69c98b6abaaaca19fa69c98b6acaaaca2a0a79c99b6acaaaca2a0a69c98b6acaaaca2a0a69b98b6acaaaea4a2a59a98b6acabafa4a3a39996b6acaab0a6a5a09694b6acaab1a6a59b9190bab1b1b2acac988e8eb5ababb2abab968c8bb2aaaab2aaaa958b89b0a6a6b1a8a6948a88b0a5a4b0a6a5948a88b0a6a4b0a5a5968a89b0a6a4afa5a4998e8cb2a8a6b1a6a59c9190b4aaa8b3a8a79e9291b6aaaab4a9a79f9492b6acaab4a9a79f9492b6acaab4a9a79f9491b6acaab4a9a79f9491b6acaab3a8a69f9491b6acaab3a8a69f9491b6acaab3a8a6c2b8b6aa9d98c1b6b5c1b6b5aa9e99c1b6b5c1b6b5ac9a91c0b6b5c1b6b5b29e94c0b6b5c1b6b5c2ab9ec0b6b5bfb4b4bab4b0c1b6b5b9afb0cac4c2c8bdbcaba2a2c4bbbadcd5d4b1a8a8c4babacec7c5b4ababc3b8b8d3cccbc3babbc0b8b8d4cdcbc6bbbbc5bbbcc0babbcbc2c2c4babcb2aaaec3babbbeb2b2beb7babeb5b5c8bec0c8c0c2bfb5b6c8bec0c7bfbfc3b9bac7bebfc5bcbcc5bcbec2b8b8bcb3b3c6bdbfc1b5b5bbb1b1c4babdc0b4b4bcb1b0c3b9bbc0b4b3bcb1b0c1b6b8c0b4b2bcb1b0c2b8b9c1b3b2bcb1b0c5bdbcbcb1b0bcb1b0c7bfbebcb0b0bcb2b0c7c1c1bcb2b2bcb1b0c8c1c2c0b5b5bcb1b0c8c1c2bfb4b6c1b7b7c9c0c2beb4b6ccc4c4c9c0c2beb4b6d4cecdb6abaac2b8b7bfb5b4b6abaac2b8b7bfb5b4b6abaac2b8b7bfb5b4b6abaac2b8b7c0b5b4b6abaac2b8b7c0b5b4b6abaac2b8b7c0b5b4b4aaa9c1b7b6bfb5b4b3a8a7c0b6b5beb4b3b0a5a4beb4b4bdb3b2aba1a0b9afaeb8aeafa79d9bb4aaa9b2a8a9a09695aea4a2b0a6a69d9392aca1a0aea4a49c9290aaa09eaea4a49c9290aaa09eaea3a49c9290aba09faea4a49c9290a99f9daea4a49c9290a89e9daea4a59d9391aca0a0afa5a6a09694b0a6a5b6acaca39998b8acacc1b6b7a29794baafaecec3c4a39895b6aba8b1a8a9a49996b2a8a69a9292a49996b2a8a6989090a39995b2a8a4978f8fa39995b2a8a4978f8fa39895b2a7a4968f8fa39895b2a7a4968f8fa39895b2a7a4968f8f"}
+;   /* cor das bordas do vídeo (topo, laterais, base) 10x por segundo: o fundo acompanha */
+  var corAtual = '';
+  function fundoAcompanha(t){
+    var s = CORES[modo === 'v' ? 'v' : 'h']; if (!s) return;
+    var n = s.length / 18, x = Math.max(0, Math.min(n - 1, t * 10)), i = Math.floor(x), f = x - i, j = Math.min(n - 1, i + 1), out = [];
+    for (var k = 0; k < 3; k++){
+      var c = [];
+      for (var q = 0; q < 3; q++){ var o = k * 6 + q * 2, a = parseInt(s.substr(i * 18 + o, 2), 16), b = parseInt(s.substr(j * 18 + o, 2), 16); c.push(Math.round(a + (b - a) * f)); }
+      out.push('rgb(' + c.join(',') + ')');
+    }
+    var chave = out.join('|'); if (chave === corAtual) return; corAtual = chave;
+    hero.style.setProperty('--f-topo', out[0]); hero.style.setProperty('--estudio', out[1]); hero.style.setProperty('--f-base', out[2]);
+  }
   var emPe = matchMedia('(orientation: portrait) and (max-width: 900px)');
   var modo = null, uRetomar = 0, temposAtuais = [1, 1, 1, 1];
   function fontes(m){
@@ -852,7 +869,7 @@ footer img{height:46px;width:auto}
     s.right = s.bottom = 'auto';
   }
   function desenhar(t){
-    enquadrar(t);
+    enquadrar(t); fundoAcompanha(t);
     var u = D ? posU(t) : 0, W = hero.clientWidth, H = hero.clientHeight;
     var distancia = H * (mobile ? 0.35 : 0.55);
     blocos.forEach(function(b, k){
