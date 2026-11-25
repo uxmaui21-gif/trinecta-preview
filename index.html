@@ -229,7 +229,11 @@ footer img{height:46px;width:auto}
   .selo-txt b{font-size:22px}
   .selo-txt span.sub{display:none}
   .hero{min-height:520px;--topo-h:70px}
-  .blocos{left:16px;right:16px;width:auto;top:16px;bottom:auto;height:46%}
+  .blocos{left:16px;right:16px;width:auto;top:86px;bottom:auto;height:auto;transform:none!important}
+  .palco{top:236px;bottom:222px;height:auto;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 90%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 90%,transparent 100%)}
+  .palco video{object-position:45% 50%}
+  body.video-v .palco{top:0;bottom:0;-webkit-mask-image:none;mask-image:none}
+  body.video-v .palco video{object-position:50% 50%}
   .bloco{top:0}
   .bloco{padding:16px 16px 14px;border-radius:16px}
   .bloco .num{margin-bottom:6px;font-size:11px}
@@ -267,6 +271,17 @@ footer img{height:46px;width:auto}
   .cards,.produtos{grid-template-columns:1fr}
   .bq{grid-template-columns:1fr}
   .wrap{padding:0 20px}
+}
+@media (max-width:700px) and (max-height:720px){
+  .blocos{top:78px}
+  .bloco h2{font-size:20px;margin-bottom:8px}
+  .saiba{font-size:14px;padding:9px 16px;min-height:40px}
+  .palco{top:200px;bottom:206px}
+  .selo{bottom:140px}
+  .selo-ic{width:52px;height:52px}
+  .selo-txt b{font-size:19px}
+  .dica{display:none}
+  .zap-flutua{bottom:140px}
 }
 @media (prefers-reduced-motion:reduce){ .palavra{transition:none} .zap-flutua,.zap-flutua::after{animation:none} }
 </style>
@@ -529,13 +544,15 @@ footer img{height:46px;width:auto}
 </div></footer>
 
 <script src="videos/tempos.js"></script>
+<script src="videos/tempos-v.js"></script>
 <script>
 (function(){
   /* ================= CONFIGURAÇÃO ================= */
   var ZAP = 'https://wa.me/?text=';   // troque por https://wa.me/55DDDNUMERO?text=
-  var VELOCIDADE = 1.8;                // 1 = normal. 1.8 = quase o dobro (mais rápido para passar os serviços)
+  var VELOCIDADE = 2.4;                // velocidade rolando devagar (1 = normal)
+  var TURBO = 3.4;                     // velocidade máxima rolando rápido
   var PARA_APOS_MS = 180;              // parou de rolar por este tempo = pausa
-  var SEGURA_NA_PAUSA_MS = 450;        // no fim de cada serviço ele segura (olhando para a câmera)
+  var SEGURA_NA_PAUSA_MS = 300;        // no fim de cada serviço ele segura (olhando para a câmera)
   var CENAS = [
     {nome:'Elétrica', palavra:'ELÉTRICA', icone:'eletrica', sub:'Projeto e instalação completa', link:'#servico-eletrica',
      titulo:'Elétrica do projeto <em>à entrega.</em>', texto:'Projeto, instalação completa e manutenção para obras, prédios e condomínios. Residências também.',
@@ -560,18 +577,35 @@ footer img{height:46px;width:auto}
   var reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var hero = $('hero'), palavra = $('palavra'), dica = $('dica'), prog = $('prog'), carregando = $('carregando');
   var A = $('ida'), B = $('volta');                  // A toca para frente, B é o mesmo vídeo invertido
-  var sufixo = mobile ? '-720.mp4' : '-1080.mp4';
-  /* reserva na nuvem: usada quando a pasta "videos" está vazia (sem rodar o .bat) */
-  var NUVEM = {"ida1080": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/9de64144-12a6-4354-a58c-4a59a9af8b8f.mp4", "volta1080": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/850c18bf-57c1-4fff-aaca-6c0c7396dd8a.mp4", "ida720": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/9ecbf471-0bc0-44af-b25d-e0341005ba17.mp4", "volta720": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/84eaf2be-6ee0-4ef2-9177-c288e8004434.mp4", "tempos": [8, 10.125, 10.125, 10.125]};
-  if (!window.TEMPOS) window.TEMPOS = NUVEM.tempos;
-  [[A, 'ida'], [B, 'volta']].forEach(function(par){
-    var v = par[0], nome = par[1];
+  /* dois vídeos: horizontal (computador / celular deitado) e vertical (celular em pé).
+     Primeiro tenta a pasta "videos"; se não houver, usa a cópia na nuvem. */
+  var NUVEM = {"ida1080": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/9de64144-12a6-4354-a58c-4a59a9af8b8f.mp4", "volta1080": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/850c18bf-57c1-4fff-aaca-6c0c7396dd8a.mp4", "ida720": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/9ecbf471-0bc0-44af-b25d-e0341005ba17.mp4", "volta720": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/84eaf2be-6ee0-4ef2-9177-c288e8004434.mp4", "tempos": [8, 10.125, 10.125, 10.125], "idaV": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/c2ea4e53-6121-4424-b529-53e01c2d6d0a.mp4", "voltaV": "https://d2ol7oe51mr4n9.cloudfront.net/user_3JaouKpClRYw1IjKdcLO36kQC11/9ba32fd5-89fc-401c-85e0-36420cd3d912.mp4", "temposV": [8.042, 10.042, 10.042, 10.042]};
+  var emPe = matchMedia('(orientation: portrait) and (max-width: 900px)');
+  var modo = null, uRetomar = 0, temposAtuais = [1, 1, 1, 1];
+  function fontes(m){
+    if (m === 'v') return {ida:['videos/ida-v.mp4', NUVEM.idaV], volta:['videos/volta-v.mp4', NUVEM.voltaV], tempos:window.TEMPOS_V || NUVEM.temposV};
+    var s = mobile ? '720' : '1080';
+    return {ida:['videos/ida-' + s + '.mp4', NUVEM['ida' + s]], volta:['videos/volta-' + s + '.mp4', NUVEM['volta' + s]], tempos:window.TEMPOS || NUVEM.tempos};
+  }
+  [A, B].forEach(function(v){
     v.addEventListener('error', function(){
-      if (v.dataset.nuvem) return;
-      v.dataset.nuvem = '1'; v.src = NUVEM[nome + (mobile ? '720' : '1080')]; v.load();
+      if (v.dataset.nuvem || !v.dataset.alt) return;
+      v.dataset.nuvem = '1'; v.src = v.dataset.alt; v.load();
     });
-    v.src = 'videos/' + nome + sufixo;
   });
+  function carregar(m){
+    if (m === modo) return;
+    if (modo !== null && D) uRetomar = Math.max(0.0001, posU(T()));
+    modo = m; document.body.classList.toggle('video-v', m === 'v');
+    var f = fontes(m); temposAtuais = f.tempos;
+    D = 0; trocando = false; pausar(); prontos = 0; carregando.textContent = 'carregando 0/2';
+    A.style.objectPosition = B.style.objectPosition = '';
+    [[A, f.ida], [B, f.volta]].forEach(function(par){
+      var v = par[0]; v.dataset.nuvem = ''; v.dataset.alt = par[1][1] || ''; v.src = par[1][0]; v.load();
+    });
+    exibir(A);
+  }
+  function modoCerto(){ return emPe.matches && NUVEM.idaV ? 'v' : 'h'; }
   A.playbackRate = B.playbackRate = VELOCIDADE;
   A.defaultPlaybackRate = B.defaultPlaybackRate = VELOCIDADE;
   var QUADRO = 1 / 30;
@@ -579,11 +613,11 @@ footer img{height:46px;width:auto}
   var D = 0, MARC = [0, 0, 0, 0, 0];             // início, fim de cada clipe (pausas) e fim
   var mostrando = A, trocando = false;
   var dir = 0, ultimoGesto = 0, seguraAte = 0, terminou = false, autoAte = null, tAnterior = 0;
-  var cenaMostrada = -1;
+  var cenaMostrada = -1, forca = 0, taxaAtual = 0;
 
   function marcar(){
     D = Math.min(A.duration || 0, B.duration || A.duration || 0);
-    var dur = (window.TEMPOS && TEMPOS.length === 4) ? TEMPOS : [1, 1, 1, 1];
+    var dur = (temposAtuais && temposAtuais.length === 4) ? temposAtuais : [1, 1, 1, 1];
     var soma = dur.reduce(function(a, b){ return a + b; }, 0), acc = 0;
     MARC = [0];
     dur.forEach(function(d){ acc += d; MARC.push(D * acc / soma); });
@@ -617,7 +651,12 @@ footer img{height:46px;width:auto}
     if (!emPosicao(o, t) && !o.seeking) { try { o.currentTime = t; } catch(e){} }
   }
   function pausar(){ if (!A.paused) A.pause(); if (!B.paused) B.pause(); }
-  function tocar(v){ if (v.paused){ v.playbackRate = VELOCIDADE; var p = v.play(); if (p && p.catch) p.catch(function(){}); } }
+  function taxa(){ return VELOCIDADE + Math.min(1, forca / 900) * (TURBO - VELOCIDADE); }
+  function tocar(v){
+    var r = autoAte !== null ? VELOCIDADE : taxa();
+    if (Math.abs(r - taxaAtual) > 0.2 || v.playbackRate !== taxaAtual){ taxaAtual = Math.round(r * 5) / 5; v.playbackRate = taxaAtual; }
+    if (v.paused){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+  }
 
   /* barra de cima: some no primeiro scroll, volta no início ou quando a pessoa sobe a página */
   function topo(mostrar){ document.body.classList.toggle('topo-oculto', !mostrar); }
@@ -637,6 +676,7 @@ footer img{height:46px;width:auto}
       dir = -1; terminou = false;
     }
     autoAte = null;
+    forca += Math.min(400, Math.abs(delta) * (e && e.type === 'touchmove' ? 5 : 1));
     ultimoGesto = performance.now();
     dica.classList.add('hide');
     acordar();
@@ -666,6 +706,7 @@ footer img{height:46px;width:auto}
   function acordar(){ if (!rodando){ rodando = true; requestAnimationFrame(laco); } }
   function laco(agora){
     if (!D){ rodando = false; return; }
+    forca *= 0.9;
     var ativo = agora - ultimoGesto < PARA_APOS_MS || autoAte !== null;
     var d = autoAte !== null ? 1 : dir;
     if (ativo && d === 1 && !terminou){
@@ -731,7 +772,26 @@ footer img{height:46px;width:auto}
   criarFlutuantes($('flutuaAtras'), mobile ? 12 : 22, false);
   criarFlutuantes($('flutuaFrente'), mobile ? 3 : 6, true);
 
+  /* celular: onde está o personagem (0 = esquerda, 1 = direita do vídeo) ao longo do tempo */
+  var FOCO = [[0,.45],[4,.44],[8,.52],[13,.47],[18.1,.5],[23,.47],[26,.32],[28.2,.28],[31,.38],[33,.42],[36,.3],[38.4,.24]];
+  function focoEm(t){
+    var s = D ? t * 38.375 / D : 0;
+    for (var i = 1; i < FOCO.length; i++){
+      if (s <= FOCO[i][0]){ var a = FOCO[i-1], b = FOCO[i], k = (s - a[0]) / (b[0] - a[0]); k = k * k * (3 - 2 * k); return a[1] + (b[1] - a[1]) * k; }
+    }
+    return FOCO[FOCO.length - 1][1];
+  }
+  var palcoEl = $('palco');
+  function enquadrar(t){
+    if (!mobile || modo !== 'h') return;
+    var Wb = palcoEl.clientWidth, Hb = palcoEl.clientHeight, Wv = Hb * 16 / 9;
+    if (Wv <= Wb) return;
+    var c = focoEm(t), p = (c * Wv - Wb / 2) / (Wv - Wb);
+    p = Math.max(0, Math.min(1, p));
+    A.style.objectPosition = B.style.objectPosition = (p * 100).toFixed(2) + '% 50%';
+  }
   function desenhar(t){
+    enquadrar(t);
     var u = D ? posU(t) : 0, W = hero.clientWidth, H = hero.clientHeight;
     var distancia = H * (mobile ? 0.35 : 0.55);
     blocos.forEach(function(b, k){
@@ -753,6 +813,7 @@ footer img{height:46px;width:auto}
 
   /* ---- carregamento ---- */
   var prontos = 0;
+  function tempoDeU(u){ var c = Math.min(3, Math.floor(u)); return Math.min(D, MARC[c] + (u - c) * (MARC[c + 1] - MARC[c])); }
   function pronto(){ prontos++; carregando.textContent = prontos < 2 ? 'carregando ' + prontos + '/2' : ''; }
   [A, B].forEach(function(v){
     v.addEventListener('canplaythrough', function f(){ v.removeEventListener('canplaythrough', f); pronto(); });
@@ -761,8 +822,18 @@ footer img{height:46px;width:auto}
   carregando.textContent = 'carregando 0/2';
   function aoCarregarDados(){
     if (!(A.duration > 0) || !(B.duration > 0)) return;
-    marcar(); desenhar(T()); sincronizarEscondido();
+    marcar();
+    if (uRetomar){
+      var u = uRetomar, t = u >= 4 ? Math.max(0, D - 0.04) : tempoDeU(u); uRetomar = 0;
+      terminou = u >= 4;
+      posicionar(A, t, function(){ exibir(A); tAnterior = t; desenhar(terminou ? D : t); sincronizarEscondido(); });
+      return;
+    }
+    desenhar(T()); sincronizarEscondido();
   }
+  carregar(modoCerto());
+  var trocaModo = function(){ carregar(modoCerto()); };
+  if (emPe.addEventListener) emPe.addEventListener('change', trocaModo); else emPe.addListener(trocaModo);
   A.addEventListener('loadedmetadata', aoCarregarDados); B.addEventListener('loadedmetadata', aoCarregarDados);
   addEventListener('resize', function(){ desenhar(T()); });
 
