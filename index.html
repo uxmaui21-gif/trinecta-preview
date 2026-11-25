@@ -41,7 +41,7 @@ header{background:var(--estudio);position:relative;z-index:5}
 .cab .dir a.tel{display:flex;align-items:center;gap:8px}
 
 /* ===== Hero: o vídeo toca enquanto a pessoa rola ===== */
-.hero{-webkit-user-select:none;user-select:none;position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--estudio);--topo-h:118px}
+.hero{touch-action:none;-webkit-user-select:none;user-select:none;position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--estudio);--topo-h:118px}
 .sobe{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
 body:not(.topo-oculto) .sobe{transform:translateY(var(--topo-h))}
 /* textos que sobem conforme a rolagem */
@@ -694,20 +694,30 @@ footer img{height:46px;width:auto}
       if (!rodaUsada){ rodaUsada = true; voltar(); }
     }
   }, {passive:false});
-  var y0 = null, toqueUsado = false;
-  addEventListener('touchstart', function(e){ y0 = e.touches[0].clientY; toqueUsado = !noTopo(); }, {passive:true});
+  /* celular: o navegador não rola a página a partir do vídeo (touch-action:none no hero).
+     Cada deslize = um serviço. Depois do último serviço, mais um deslize para cima desce a página. */
+  var y0 = null, yUlt = 0, toqueUsado = false, toqueNoHero = false;
+  addEventListener('touchstart', function(e){
+    y0 = yUlt = e.touches[0].clientY; toqueUsado = false;
+    toqueNoHero = !!(e.target.closest && e.target.closest('#hero'));
+  }, {passive:true});
   addEventListener('touchmove', function(e){
-    if (y0 === null || !noTopo()) return;
-    var d = y0 - e.touches[0].clientY;
-    if (Math.abs(d) < 12) return;
+    if (y0 === null || !toqueNoHero) return;
+    var y = e.touches[0].clientY, d = y0 - y;
+    if (!noTopo()){                                    // hero só parcialmente na tela: rola a página na mão
+      window.scrollBy(0, yUlt - y); yUlt = y;
+      if (e.cancelable) e.preventDefault();
+      return;
+    }
+    if (e.cancelable) e.preventDefault();
+    if (Math.abs(d) < 12 || toqueUsado) return;
+    toqueUsado = true;
     if (d > 0){
-      if (terminou && !alvo) return;
-      if (e.cancelable) e.preventDefault();
-      if (!toqueUsado){ toqueUsado = true; avancar(); }
+      if (alvo) return;
+      if (terminou || indice() >= 4){ topo(false); sairDoHero('#faixa'); }
+      else avancar();
     } else {
-      if (noInicio() && !alvo) return;
-      if (e.cancelable) e.preventDefault();
-      if (!toqueUsado){ toqueUsado = true; voltar(); }
+      if (!noInicio() || alvo) voltar(); else topo(true);
     }
   }, {passive:false});
   addEventListener('touchend', function(){ y0 = null; }, {passive:true});
