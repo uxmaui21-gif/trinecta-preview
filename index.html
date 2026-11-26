@@ -102,7 +102,7 @@ body:not(.topo-oculto) .sobe{transform:translateY(var(--topo-h))}
 .pular:hover{background:#fff}
 .pular svg{width:18px;height:18px;transform:rotate(90deg)}
 .pular:focus-visible{outline:3px solid var(--laranja);outline-offset:2px}
-.palco{position:absolute;inset:0;background:transparent;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(180deg,transparent,#000 9%,#000 91%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(180deg,transparent,#000 9%,#000 91%,transparent);mask-composite:intersect}
+.palco{position:absolute;inset:0;background:transparent;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent),linear-gradient(180deg,#000,#000 93%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent),linear-gradient(180deg,#000,#000 93%,transparent);mask-composite:intersect}
 .palavra{position:absolute;left:0;right:0;top:50%;transform:translateY(-58%);text-align:center;font-weight:900;
   font-size:clamp(80px,17vw,260px);line-height:.85;letter-spacing:-4px;color:var(--palavra);white-space:nowrap;
   transition:opacity .3s ease, transform .3s ease;user-select:none;z-index:1}
@@ -238,9 +238,9 @@ footer img{height:46px;width:auto}
   .selo-txt span.sub{display:none}
   .hero{min-height:520px;--topo-h:70px}
   .blocos{left:16px;right:86px;width:auto;top:auto;bottom:16px;height:auto;transform:none!important}
-  .palco{top:150px;bottom:176px;height:auto;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 90%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 90%,transparent 100%)}
+  .palco{top:150px;bottom:176px;height:auto;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 92%,transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 92%,transparent 100%)}
   .palco video{object-position:45% 50%}
-  body.video-v .palco{-webkit-mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);-webkit-mask-composite:source-over;mask-composite:add}
+  body.video-v .palco{-webkit-mask-image:linear-gradient(180deg,#000,#000 94%,transparent);mask-image:linear-gradient(180deg,#000,#000 94%,transparent);-webkit-mask-composite:source-over;mask-composite:add}
   body.video-v .palco video{object-position:50% 50%}
   .bloco{top:auto;bottom:0}
   .bloco{padding:16px 16px 14px;border-radius:16px}
