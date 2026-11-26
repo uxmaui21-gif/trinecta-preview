@@ -44,7 +44,7 @@ header{background:#fff;position:relative;z-index:5;box-shadow:0 1px 0 rgba(19,29
 .cab .dir a.tel{display:flex;align-items:center;gap:8px}
 
 /* ===== Hero: o vídeo toca enquanto a pessoa rola ===== */
-.hero{touch-action:none;-webkit-user-select:none;user-select:none;position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--estudio);background:linear-gradient(180deg,var(--f-topo,var(--estudio)) 0%,var(--estudio) 50%,var(--f-base,var(--estudio)) 100%);--topo-h:118px;--gut:max(28px,calc((100% - 1224px) / 2))}
+.hero{touch-action:none;-webkit-user-select:none;user-select:none;position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:var(--estudio);background:linear-gradient(180deg,var(--f-topo,var(--estudio)) 0,var(--f-topo,var(--estudio)) var(--p-topo,0%),var(--estudio) var(--p-meio,50%),var(--f-base,var(--estudio)) var(--p-base,100%),var(--f-base,var(--estudio)) 100%);--topo-h:118px;--gut:max(28px,calc((100% - 1224px) / 2))}
 .sobe{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
 body:not(.topo-oculto) .sobe{transform:translateY(var(--topo-h))}
 /* textos que sobem conforme a rolagem */
@@ -849,6 +849,9 @@ footer img{height:46px;width:auto}
     p = Math.max(0, Math.min(1, p));
     A.style.objectPosition = B.style.objectPosition = (p * 100).toFixed(2) + '% 50%';
   }
+  function faixasFundo(yt, h){   /* o fundo usa a cor do topo do vídeo acima dele e a da base abaixo dele: sem emenda */
+    hero.style.setProperty('--p-topo', yt + 'px'); hero.style.setProperty('--p-meio', (yt + h / 2) + 'px'); hero.style.setProperty('--p-base', (yt + h) + 'px');
+  }
   function dimensionarPalco(){
     var s = palcoEl.style;
     if (mobile && modo !== 'v'){ s.left = s.top = s.width = s.height = ''; return; }   // celular sem vídeo vertical: faixa com enquadramento
@@ -857,16 +860,18 @@ footer img{height:46px;width:auto}
       var hv = W / r; if (hv > H){ hv = H; }
       var wv = hv * r;
       s.width = wv + 'px'; s.height = hv + 'px'; s.left = ((W - wv) / 2) + 'px'; s.top = Math.max(0, (H - hv) / 2) + 'px'; s.right = s.bottom = 'auto';
+      faixasFundo(Math.max(0, (H - hv) / 2), hv);
       return;
     }
     else {
       var th = $('topo').offsetHeight, gut = Math.max(28, (W - 1224) / 2), col = Math.min(430, W * 0.33) + 28;
       x0 = gut; y0 = th + 8; aw = W - 2 * gut - col; ah = H - y0 - 96;
     }
-    var w = Math.min(aw, ah * r), h = w / r;
+    var w = Math.min(aw, ah * r), h = w / r, yt = y0 + (ah - h) / 2;
     s.width = w + 'px'; s.height = h + 'px';
-    s.left = (x0 + (aw - w) / 2) + 'px'; s.top = (y0 + (ah - h) / 2) + 'px';
+    s.left = (x0 + (aw - w) / 2) + 'px'; s.top = yt + 'px';
     s.right = s.bottom = 'auto';
+    faixasFundo(yt, h);
   }
   function desenhar(t){
     enquadrar(t); fundoAcompanha(t);
